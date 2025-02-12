@@ -1,0 +1,92 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  # DOMAINE 1 
+  config.vm.define "dc01" do|dc01|
+    dc01.vm.box = "jborean93/WindowsServer2012"
+    dc01.vm.box_version = "1.2.0"
+    
+    dc01.vm.hostname = "dc01"
+    dc01.vm.guest = :windows
+    dc01.winrm.transport = :ssl
+    dc01.vm.network "private_network", ip: "10.10.1.2"
+    dc01.winrm.basic_auth_only = true
+    # dc01.vm.boot_timeout = 800
+    dc01.winrm.ssl_peer_verification = false # ajout suite a l'erruer ssl_peer_verification 
+    
+    # dc01.vm.disk :disk, size: "40", name: "storage_dc01"
+    
+    # dc01.vm.provision "shell", path: "scripts/DeactivateNetworkInterfaces.ps1"
+    # dc01.vm.provision "shell", path: "scripts/ad/irma.local/ad-ds.ps1"
+    # ressources
+    dc01.vm.provider "virtualbox" do |vb|
+      vb.name = "DC01"
+      vb.memory = 2048 # 2 Go de RAM
+      vb.cpus = 2 # 2 processeurs
+    end
+
+    dc01.vm.provision :ansible do |ansible|
+      ansible.limit = 'all'
+      ansible.playbook = 'ansible/playbook.yml'
+      ansible.verbose =  true
+      ansible.limit = "dc01"  # Exécute seulement dc01
+      ansible.host_vars = {
+      "dc01" => {"ansible_winrm_server_cert_validation" => "ignore"}
+    }
+    end 
+  end
+
+  config.vm.define "file_srv" do|file_srv|
+    file_srv.vm.box = "jborean93/WindowsServer2022"
+    file_srv.vm.box_version = "1.2.0"
+
+    file_srv.vm.hostname = "FileSrv"
+    file_srv.vm.network "private_network", ip: "10.10.1.3"
+    file_srv.vm.guest = :windows
+    file_srv.winrm.transport = :ssl
+    file_srv.winrm.basic_auth_only = true
+    # file_srv.vm.boot_timeout = 600
+    file_srv.winrm.ssl_peer_verification = false # ajout suite a l'erruer ssl_peer_verification 
+
+    # file_srv.vm.provision "shell", path: 'scripts/ad/irma.local/fileSrv_role/srv-file-join-domain.ps1'
+
+     # ressources
+    file_srv.vm.provider "virtualbox" do |vb|
+      vb.name = "FILE_SRV"
+      vb.memory = 2048 # 2 Go de RAM
+      vb.cpus = 2 # 2 processeurs
+    end
+
+    file_srv.vm.provision :ansible do |ansible|
+      ansible.limit = 'all'
+      ansible.playbook = 'ansible/playbook.yml'
+      ansible.verbose =  true
+      ansible.limit = "file_srv"  # Exécute seulement file_srv
+      ansible.host_vars = {
+      "file_srv" => {"ansible_winrm_server_cert_validation" => "ignore"}
+    }
+    end 
+  end
+  
+  config.vm.define "debian" do|debian|
+    debian.vm.box = "debian/bullseye64"
+    debian.vm.box_version = "11.20241217.1"
+    debian.vm.hostname = "debian"
+    debian.vm.network "private_network", ip: "10.10.1.4"
+
+    debian.vm.provider "virtualbox" do |vb|
+      vb.name = "debian"
+      vb.memory = 2048 # 2 Go de RAM
+      vb.cpus = 2 # 2 processeurs
+      end
+
+    # debian.vm.provision "shell", inline: <<-SHELL
+    #   echo "vagrant"|sudo -S apt update -y  && sudo -S apt upgrade -y
+    #   sudo apt install apache2 -y 
+    #   sudo systemctl enable apache2.service
+    # SHELL
+  end
+
+end

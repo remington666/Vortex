@@ -1,0 +1,66 @@
+# - name: Creation de dossier partager "C:\\Sharing"
+#   win_file:
+#     path: "C:\\Sharing\\"
+#     state: directory
+
+# - name: Creation des dossiers 
+#   win_file:
+#     path: "C:\\Sharing\\{{ item }}"
+#     state: directory
+#   loop:
+#     - Direction
+#     - RH
+#     - IT
+#     - Finance
+
+# # sharing
+# - name: Créataion et affectation de droit d'ecriture et de lecture sur les dossiers partagers
+#   win_share: 
+#     name: "{{ item }}"
+#     path: "C:\\Sharing\\{{ item }}"
+#     description: "top secret share"
+#     read: IRMA.local\GDL_{{ item }}_RO
+#     change: IRMA.local\GDL_{{ item }}_RW
+#     list: true
+#   loop:
+#     - Direction
+#     - RH
+#     - IT
+#     - Finance
+  
+# # ntfs
+# - name: Désactivation de l'heritage des dossiers partagée 
+#   win_acl_inheritance:
+#     path: "C:\\Sharing\\{{ item }}"
+#     state: absent
+#   loop:
+#     - Direction
+#     - RH
+#     - IT
+#     - Finance
+
+
+# ntfs
+- name: Ajout de droit de lister et de lecture ntfs pour les dossiers partager
+  win_acl:
+    user: GDL_{{ item }}_RO
+    path: "C:\\Sharing\\{{ item }}"
+    type: allow # pour appliquer les restriction
+    rights: ListDirectory, Read
+  loop:
+    - Direction
+    - RH
+    - IT
+    - Finance
+
+- name: Ajout de droit d'ecriture et d'execution ntfs pour les dossiers partager
+  win_acl:
+    user: GDL_{{ item }}_RW
+    path: "C:\\Sharing\\{{ item }}"
+    type: allow # pour appliquer les restriction
+    rights: Modify,Write, ReadAndExecute
+  loop:
+    - Direction
+    - RH
+    - IT
+    - Finance

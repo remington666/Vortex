@@ -1,0 +1,5 @@
+- name: Configuration des role de serveur de fichier
+  import_tasks: config_server.yml 
+
+- name: Configuration des elements agdlp cotée serveur de fichier
+  import_tasks: agdlp.yml 

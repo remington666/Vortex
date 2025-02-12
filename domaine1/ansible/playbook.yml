@@ -1,0 +1,11 @@
+- name: Configureation du controller de domaine DC01
+  hosts: dc01
+  roles:
+    - ad/ad-ds
+
+- name: Configuration du serveur de fichier
+  hosts: file_srv
+  roles:
+    - ad/fs-file-server
+
+

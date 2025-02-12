@@ -1,0 +1,22 @@
+- name: Installer le rôle Active Directory
+  win_feature:
+    name: AD-Domain-Services
+    include_management_tools: yes
+    state: present
+
+- name: Installer le module PowerShell pour AD-DS
+  win_shell: Install-WindowsFeature RSAT-AD-PowerShell,RSAT-AD-AdminCenter,RSAT-ADDS-Tools
+
+- name: Promouvoir en contrôleur de domaine
+  win_shell: |
+    Import-Module ADDSDeployment
+    $safeModeAdminstratorPassword = ConvertTo-SecureString 'Azertyuiop68.' -AsPlainText -Force
+    Install-ADDSforest  -CreateDNSDelegation:$false -DatabasePath "C:\Windows\NTDS" -DOmainMode "Win2012" -DOmainName "irma.local" -DOmainNetbiosName "IRMA" -ForestMode "Win2012" -InstallDns:$true -LogPath "C:\Windows\NTDS" -NoRebootOnCompletion:$false -SysvolPath "C:\Windows\SYSVOL" -SafeModeAdministratorPassword $safeModeAdminstratorPassword -Force:$true
+
+- name: Redémarrer la machine après l’installation du rôle AD-DS
+  win_reboot:
+
+- name: Modification du mot de passe Administrateur
+  win_shell: 'net user Administrator Azertyuiop68.'
+  become_user: 'Administrator'
+  become_method: runas

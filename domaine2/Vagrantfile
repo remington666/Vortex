@@ -1,0 +1,73 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  # DOMAINE 1 
+  config.vm.define "dc02" do|dc02|
+    dc02.vm.box_version = "1.2.0"
+    dc02.vm.box = "jborean93/WindowsServer2022"
+    
+    dc02.vm.hostname = "dc02"
+    dc02.vm.guest = :windows
+    dc02.winrm.transport = :ssl
+    dc02.vm.network "private_network", ip: "10.10.2.2"
+    dc02.winrm.basic_auth_only = true
+    # dc02.vm.boot_timeout = 800
+    dc02.winrm.ssl_peer_verification = false # ajout suite a l'erruer ssl_peer_verification 
+    
+    
+    # dc02.vm.provision "shell", path: "scripts/DeactivateNetworkInterfaces.ps1"
+    # dc02.vm.provision "shell", path: "scripts/ad/ad-ds.ps1"
+    dc02.vm.provider "virtualbox" do |vb|
+      vb.name = "DC02"
+      vb.memory = 2048 # 2 Go de RAM
+      vb.cpus = 2 # 2 processeurs
+      
+    end
+  end
+  
+  config.vm.define "iis" do|iis|
+    iis.vm.box = "jborean93/WindowsServer2012"
+    iis.vm.box_version = "1.2.0"
+
+    iis.vm.hostname = "IIS12"
+    iis.vm.network "private_network", ip: "10.10.2.3"
+    iis.vm.guest = :windows
+    iis.winrm.transport = :ssl
+    iis.winrm.basic_auth_only = true
+    # iis.vm.boot_timeout = 600
+    iis.winrm.ssl_peer_verification = false # ajout suite a l'erruer ssl_peer_verification 
+
+    # iis.vm.provision "shell", path: 'scripts/ad/srv-file-join-domain.ps1'
+    # iis.vm.provision "shell", path: 'scripts/ad/srv-file-join-domain.ps1'
+
+     # ressources
+    iis.vm.provider "virtualbox" do |vb|
+      vb.name = "IIS12"
+      vb.memory = 2048 # 2 Go de RAM
+      vb.cpus = 2 # 2 processeurs
+    end
+  end
+  
+  config.vm.define "ubuntu_server" do|ubuntu_server|
+    ubuntu_server.vm.box = "ubuntu/trusty64"
+    ubuntu_server.vm.box_version = "20191107.0.0"
+    ubuntu_server.vm.hostname = "ubuntuSrv"
+
+    ubuntu_server.vm.network "private_network", ip: "10.10.1.4"
+
+    ubuntu_server.vm.provider "virtualbox" do |vb|
+      vb.name = "ubuntuSrv"
+      vb.memory = 2048 # 2 Go de RAM
+      vb.cpus = 2 # 2 processeurs
+      end
+
+    # ubuntu_server.vm.provision "shell", inline: <<-SHELL
+    #   echo "vagrant"|sudo -S apt update -y  && sudo -S apt upgrade -y
+    #   sudo apt install apache2 -y 
+    #   sudo systemctl enable apache2.service
+    # SHELL
+  end
+
+end
