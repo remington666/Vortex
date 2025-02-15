@@ -5,6 +5,7 @@
     New-GPO -Name $GPOName | Out-Null
 
     Set-GPRegistryValue -Name $GPOName -Key "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -ValueName "DisableCAD" -Type DWord -Value 1
-    New-GPLink -Name $GPOName -Target "DC=irma,DC=local" -Enforced Yes
+    New-GPLink -Name $GPOName -Target "DC=irma,DC=local" -Enforced Yes 
+    Set-GPPermission -Name $GPOName -TargetName 'GG_RH' -TargetType Group -PermissionLevel  GpoEditDeleteModifySecurity
 
 
