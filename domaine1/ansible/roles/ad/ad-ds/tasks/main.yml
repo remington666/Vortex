@@ -6,7 +6,7 @@
 
 - name: Creation de groupe
   import_tasks: groupe.yml 
-# 
+
 - name: Création d'utilisateurs
   import_tasks: users.yml 
 

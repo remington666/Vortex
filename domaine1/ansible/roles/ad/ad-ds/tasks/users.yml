@@ -23,9 +23,7 @@
     surname: "{{ item.surname }}"
     password: "{{ item.password }}"
     path: "ou={{ item.group }},ou=Utilisateurs,dc=irma,dc=local"
-    set:
-    - "{{ item.group }}"
-    
+
     state: present
   loop: "{{ users }}"  # Utilisation de la variable 'users' définie ci-dessus
 
