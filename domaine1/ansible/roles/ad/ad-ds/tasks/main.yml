@@ -12,3 +12,6 @@
 
 - name: Methode AGDLP
   import_tasks: agdlp.yml  
+
+- name: Deployement des GPO
+  import_tasks: gpo.yml 
