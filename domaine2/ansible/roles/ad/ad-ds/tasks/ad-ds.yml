@@ -1,0 +1,7 @@
+- name: Create a child domain katrina.irma.local
+  microsoft.ad.domain_child:
+    dns_domain_name: katrina.irma.local
+    domain_admin_user: administrator@irma.local
+    domain_admin_password: Azertyuiop68.
+    safe_mode_password: password123!
+    reboot: true
