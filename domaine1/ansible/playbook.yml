@@ -8,7 +8,7 @@
   roles:
     - ad/fs-file-server
 
-- name: Desactivation de l'interface vagrant
+- name: Configuration des globales
   hosts: all
   roles:
     - windows
