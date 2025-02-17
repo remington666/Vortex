@@ -1,0 +1,6 @@
+- name: Configuration du controlleur de domaine DC02
+  hosts: dc02
+  roles:
+    - ad/ad-ds
+
+
