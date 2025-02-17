@@ -16,6 +16,12 @@ Vagrant.configure("2") do |config|
     controller.vm.provision "shell", name: "testdeux", inline: <<-SHELL
       sudo apt-get install sshpass
     SHELL
+
+    controller.vm.provision "shell", name: "testdeux", inline: <<-SHELL
+      sudo mkdir -p ~/ansible
+      cd ~/ansible
+
+    SHELL
   end
 
 
@@ -34,11 +40,66 @@ Vagrant.configure("2") do |config|
       # Ajout d'un utilisateur ansible avec accès SSH par mot de passe
       sudo useradd -m -s /bin/bash ansible
       echo 'ansible:ansible' | sudo chpasswd
-
       # Autoriser la connexion par mot de passe (utile pour les premiers tests Ansible)
       sudo sed -i 's/^#\?PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
       sudo systemctl restart ssh
-    SHELL
+      SHELL
+      
+      sudo usermod -aG sudo ansible
+
+      nano desactivatio_carte_reseaux.yml
+
+      ---
+- name: Supprimer une ligne spécifique d'un fichier
+  hosts: debian_test
+  become: true
+
+  tasks:
+    - name: Supprimer toutes les lignes contenant "motclé" dans fichier.txt
+      lineinfile:
+        path: /etc/network/interfaces
+        regexp: 'eth0'
+        state: absent
+
+
+- name: Redémarrer le service networking
+  hosts: debian_test
+  become: true
+
+  tasks:
+    - name: Redémarrer le service networking avec systemd
+      systemd:
+        name: networking
+        state: restarted
+      ignore_errors: yes   # Ignore les erreurs si la commande échoue (utile selon la distro)
+
+    - name: Vérifier le statut du service networking
+      systemd:
+        name: networking
+        state: started
+    - name: Supprimer une adresse IP de l'interface réseau
+      hosts: debian_test
+      become: true   # Nécessite des privilèges sudo
+      tasks:
+        - name: Supprimer l'adresse IP 10.0.2.15/24 de eth0
+          command: ip addr del 10.0.2.15/24 dev eth0
+
+    nano ansible.cfg
+    [defaults]
+inventory = inventory.ini
+host_key_checking = False
+retry_files_enabled = False
+timeout = 30
+
+
+nano inventory.ini
+[debian_test]
+192.168.1.4 ansible_user=ansible ansible_password=ansible ansible_become_password=ansible ansible_ssh_common_args='-o StrictHostKeyC>
+
+
+ansible-playbook -i inventory.ini desactivation_carte_reseaux.yml
+
+
   end
 
 end
