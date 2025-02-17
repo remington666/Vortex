@@ -126,28 +126,30 @@ Vagrant.configure("2") do |config|
     SHELL
   end
 
-  config.vm.define "linuxagent" do |linuxagent|
-    linuxagent.vm.box = "ubuntu/focal64"
-    linuxagent.vm.network "private_network", type: "static", ip: "192.168.50.5"
-    linuxagent.vm.provider "virtualbox" do |vb|
-      vb.memory = "1024"
-      vb.cpus = 1
-    end
-    linuxagent.vm.provision "file", source: "/vagrant/conf/confagentlinux-ossec.conf", destination: "/home/vagrant/ossec.conf"
-    linuxagent.vm.provision "shell", name: "part15", inline: <<-SHELL
-      sudo hostnamectl set-hostname linuxagent
-      sudo systemctl restart systemd-logind.service
-      sudo apt-get install -y gnupg apt-transport-https curl
-      sudo curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | sudo gpg --no-default-keyring --keyring gnupg-ring:/usr/share/keyrings/wazuh.gpg --import && sudo chmod 644 /usr/share/keyrings/wazuh.gpg
-      sudo echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" | sudo tee -a /etc/apt/sources.list.d/wazuh.list
-      sudo apt-get update
-      WAZUH_MANAGER="192.168.50.4"
-      sudo apt-get install wazuh-agent
-      sudo rm -f /var/ossec/etc/ossec.conf
-      sudo mv /home/vagrant/ossec.conf /var/ossec/etc/ossec.conf
-      sudo systemctl enable wazuh-agent
-      sudo reboot
-      sudo systemctl start wazuh-agent
-    SHELL
-  end
+
+  # # Pour la partie installation d'un agent Wazuh sur un poste Linux
+  # config.vm.define "linuxagent" do |linuxagent|
+  #   linuxagent.vm.box = "ubuntu/focal64"
+  #   linuxagent.vm.network "private_network", type: "static", ip: "192.168.50.5"
+  #   linuxagent.vm.provider "virtualbox" do |vb|
+  #     vb.memory = "1024"
+  #     vb.cpus = 1
+  #   end
+  #   linuxagent.vm.provision "file", source: "/vagrant/conf/confagentlinux-ossec.conf", destination: "/home/vagrant/ossec.conf"
+  #   linuxagent.vm.provision "shell", name: "part15", inline: <<-SHELL
+  #     sudo hostnamectl set-hostname linuxagent
+  #     sudo systemctl restart systemd-logind.service
+  #     sudo apt-get install -y gnupg apt-transport-https curl
+  #     sudo curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | sudo gpg --no-default-keyring --keyring gnupg-ring:/usr/share/keyrings/wazuh.gpg --import && sudo chmod 644 /usr/share/keyrings/wazuh.gpg
+  #     sudo echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" | sudo tee -a /etc/apt/sources.list.d/wazuh.list
+  #     sudo apt-get update
+  #     WAZUH_MANAGER="192.168.50.4"
+  #     sudo apt-get install wazuh-agent
+  #     sudo rm -f /var/ossec/etc/ossec.conf
+  #     sudo mv /home/vagrant/ossec.conf /var/ossec/etc/ossec.conf
+  #     sudo systemctl enable wazuh-agent
+  #     sudo reboot
+  #     sudo systemctl start wazuh-agent
+  #   SHELL
+  # end
 end
