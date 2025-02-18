@@ -124,6 +124,19 @@ Vagrant.configure("2") do |config|
       sudo systemctl enable wazuh-manager
       sudo systemctl start wazuh-manager
     SHELL
+
+    wazuhserver.vm.provision "shell", name: "install_ssh", inline: <<-SHELL
+      sudo apt-get update
+      sudo apt-get install -y openssh-server
+      sudo systemctl enable ssh
+      sudo systemctl start ssh
+      sudo useradd -m -s /bin/bash ansible
+      echo 'ansible:ansible' | sudo chpasswd
+      sudo sed -i 's/^#\?PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+      sudo systemctl restart ssh
+      sudo usermod -aG sudo ansible
+    SHELL
+
   end
 
 
