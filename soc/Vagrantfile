@@ -8,10 +8,10 @@ Vagrant.configure("2") do |config|
       vb.memory = "4096"
       vb.cpus = 4
     end
-    wazuhserver.vm.provision "file", source: "/vagrant/conf/config.yml", destination: "/home/vagrant/config.yml"
-    wazuhserver.vm.provision "file", source: "/vagrant/conf/filebeat.yml", destination: "/home/vagrant/filebeat.yml"
-    wazuhserver.vm.provision "file", source: "/vagrant/conf/opensearch_dashboards.yml", destination: "/home/vagrant/opensearch_dashboards.yml"
-    wazuhserver.vm.provision "file", source: "/vagrant/conf/opensearch.yml", destination: "/home/vagrant/opensearch.yml"
+    wazuhserver.vm.provision "file", source: "../conf/config.yml", destination: "/home/vagrant/config.yml"
+    wazuhserver.vm.provision "file", source: "../conf/filebeat.yml", destination: "/home/vagrant/filebeat.yml"
+    wazuhserver.vm.provision "file", source: "../conf/opensearch_dashboards.yml", destination: "/home/vagrant/opensearch_dashboards.yml"
+    wazuhserver.vm.provision "file", source: "../conf/opensearch.yml", destination: "/home/vagrant/opensearch.yml"
     
     wazuhserver.vm.provision "shell", name: "part1", inline: <<-SHELL
       sudo apt-get install -y gnupg apt-transport-https curl
