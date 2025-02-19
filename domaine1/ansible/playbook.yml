@@ -9,8 +9,8 @@
     - ad/fs-file-server
 
 - name: Configuration des globales
-  hosts: windows_server
+  hosts: all
   roles:
-    - windows
+    - windows/network
 
 
