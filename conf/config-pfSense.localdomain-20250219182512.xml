@@ -58,71 +58,68 @@
 		<wan>
 			<enable></enable>
 			<if>em0</if>
-			<mtu></mtu>
-			<ipaddr>dhcp</ipaddr>
-			<ipaddrv6>dhcp6</ipaddrv6>
-			<subnet></subnet>
-			<gateway></gateway>
 			<blockbogons></blockbogons>
+			<descr><![CDATA[WAN]]></descr>
+			<ipaddr>dhcp</ipaddr>
 			<dhcphostname></dhcphostname>
-			<media></media>
-			<mediaopt></mediaopt>
-			<dhcp6-duid></dhcp6-duid>
-			<dhcp6-ia-pd-len>0</dhcp6-ia-pd-len>
+			<alias-address></alias-address>
+			<alias-subnet>32</alias-subnet>
+			<dhcprejectfrom></dhcprejectfrom>
+			<adv_dhcp_pt_timeout></adv_dhcp_pt_timeout>
+			<adv_dhcp_pt_retry></adv_dhcp_pt_retry>
+			<adv_dhcp_pt_select_timeout></adv_dhcp_pt_select_timeout>
+			<adv_dhcp_pt_reboot></adv_dhcp_pt_reboot>
+			<adv_dhcp_pt_backoff_cutoff></adv_dhcp_pt_backoff_cutoff>
+			<adv_dhcp_pt_initial_interval></adv_dhcp_pt_initial_interval>
+			<adv_dhcp_pt_values>SavedCfg</adv_dhcp_pt_values>
+			<adv_dhcp_send_options></adv_dhcp_send_options>
+			<adv_dhcp_request_options></adv_dhcp_request_options>
+			<adv_dhcp_required_options></adv_dhcp_required_options>
+			<adv_dhcp_option_modifiers></adv_dhcp_option_modifiers>
+			<adv_dhcp_config_advanced></adv_dhcp_config_advanced>
+			<adv_dhcp_config_file_override></adv_dhcp_config_file_override>
+			<adv_dhcp_config_file_override_path></adv_dhcp_config_file_override_path>
+			<spoofmac></spoofmac>
 		</wan>
 		<lan>
 			<if>em1</if>
 			<enable></enable>
+			<descr><![CDATA[SOC]]></descr>
 			<ipaddr>192.168.1.1</ipaddr>
 			<subnet>24</subnet>
-			<gateway></gateway>
-			<ipaddrv6></ipaddrv6>
-			<subnetv6></subnetv6>
-			<gatewayv6></gatewayv6>
+			<spoofmac></spoofmac>
 		</lan>
 		<opt1>
 			<if>em2</if>
-			<descr><![CDATA[OPT1]]></descr>
+			<descr><![CDATA[RED_TEAM]]></descr>
+			<enable></enable>
 			<ipaddr>192.168.2.1</ipaddr>
 			<subnet>24</subnet>
-			<gateway></gateway>
-			<ipaddrv6></ipaddrv6>
-			<subnetv6></subnetv6>
-			<gatewayv6></gatewayv6>
-			<enable></enable>
+			<spoofmac></spoofmac>
 		</opt1>
 		<opt2>
 			<if>em3</if>
-			<descr><![CDATA[OPT2]]></descr>
+			<descr><![CDATA[LAN]]></descr>
+			<enable></enable>
 			<ipaddr>10.10.0.1</ipaddr>
 			<subnet>24</subnet>
-			<gateway></gateway>
-			<ipaddrv6></ipaddrv6>
-			<subnetv6></subnetv6>
-			<gatewayv6></gatewayv6>
-			<enable></enable>
+			<spoofmac></spoofmac>
 		</opt2>
 		<opt3>
 			<if>em4</if>
-			<descr><![CDATA[OPT3]]></descr>
+			<descr><![CDATA[IRMA]]></descr>
+			<enable></enable>
 			<ipaddr>10.10.1.1</ipaddr>
 			<subnet>24</subnet>
-			<gateway></gateway>
-			<ipaddrv6></ipaddrv6>
-			<subnetv6></subnetv6>
-			<gatewayv6></gatewayv6>
-			<enable></enable>
+			<spoofmac></spoofmac>
 		</opt3>
 		<opt4>
 			<if>em5</if>
-			<descr><![CDATA[OPT4]]></descr>
+			<descr><![CDATA[KATRINA]]></descr>
+			<enable></enable>
 			<ipaddr>10.10.2.1</ipaddr>
 			<subnet>24</subnet>
-			<gateway></gateway>
-			<ipaddrv6></ipaddrv6>
-			<subnetv6></subnetv6>
-			<gatewayv6></gatewayv6>
-			<enable></enable>
+			<spoofmac></spoofmac>
 		</opt4>
 	</interfaces>
 	<staticroutes></staticroutes>
@@ -453,8 +450,7 @@
 		<period>10</period>
 	</widgets>
 	<openvpn></openvpn>
-	<dnshaper>
-	</dnshaper>
+	<dnshaper></dnshaper>
 	<unbound>
 		<enable></enable>
 		<dnssec></dnssec>
@@ -467,12 +463,11 @@
 	</unbound>
 	<dyndnses></dyndnses>
 	<revision>
-		<time>1739213977</time>
-		<description><![CDATA[admin@10.0.2.2: Firewall: Rules - saved/edited a firewall rule.]]></description>
+		<time>1739989495</time>
+		<description><![CDATA[admin@10.0.2.2: /interfaces_assign.php made unknown change]]></description>
 		<username>admin@10.0.2.2</username>
 	</revision>
-	<shaper>
-	</shaper>
+	<shaper></shaper>
 	<cert>
 		<refid>59e9f55fd9148</refid>
 		<descr><![CDATA[webConfigurator default (59e9f55fd9148)]]></descr>
@@ -480,4 +475,6 @@
 		<crt>LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUZqekNDQkhlZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBRENCdERFTE1Ba0dBMVVFQmhNQ1ZWTXgKRGpBTUJnTlZCQWdUQlZOMFlYUmxNUkV3RHdZRFZRUUhFd2hNYjJOaGJHbDBlVEU0TURZR0ExVUVDaE12Y0daVApaVzV6WlNCM1pXSkRiMjVtYVdkMWNtRjBiM0lnVTJWc1ppMVRhV2R1WldRZ1EyVnlkR2xtYVdOaGRHVXhLREFtCkJna3Foa2lHOXcwQkNRRVdHV0ZrYldsdVFIQm1VMlZ1YzJVdWJHOWpZV3hrYjIxaGFXNHhIakFjQmdOVkJBTVQKRlhCbVUyVnVjMlV0TlRsbE9XWTFOV1prT1RFME9EQWVGdzB4TnpFd01qQXhNekE0TkRoYUZ3MHlNekEwTVRJeApNekE0TkRoYU1JRzBNUXN3Q1FZRFZRUUdFd0pWVXpFT01Bd0dBMVVFQ0JNRlUzUmhkR1V4RVRBUEJnTlZCQWNUCkNFeHZZMkZzYVhSNU1UZ3dOZ1lEVlFRS0V5OXdabE5sYm5ObElIZGxZa052Ym1acFozVnlZWFJ2Y2lCVFpXeG0KTFZOcFoyNWxaQ0JEWlhKMGFXWnBZMkYwWlRFb01DWUdDU3FHU0liM0RRRUpBUllaWVdSdGFXNUFjR1pUWlc1egpaUzVzYjJOaGJHUnZiV0ZwYmpFZU1Cd0dBMVVFQXhNVmNHWlRaVzV6WlMwMU9XVTVaalUxWm1RNU1UUTRNSUlCCklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUE0YTBTR3NKamZlVUJpSmNCWjZGekI4UGEKWkdqT2Nqb3ZPN1F1NTZRSmJEWkpuTVBiWVJWTTNpem9ocjUzY05tS2NVSnorZS9TVWxVRTVQTlBKaTd2ZUM4cQp4bEJKVC9LYk9iaHhlUEh1YWpWcklRckptemlKNFZxbWlwcy9pZzNjQ0RwclVia2RVUVF0SE9EK01QYmNLbk1wCmtTcUZkR2R6VC85amd1cG9KWk1uVEJjUFNyZ2RlbWFyQ1RaempJNVZQNklaUlByQ3REOXdad2Jydnp1Vmk2RlIKbEIrU3k5WDRhQmJ2U3JiVGcyNTU1eWVPOXpNMmF4a05Wa0VGa2FSNldkR2d1RjlCTHR0b01OZHJRMjhSdWdpdgpvT0RzOVpqRmpqcWJvUE1vcWl5U1pvdEljV1kzdWVuQkl0Njdwa3RTVDl0RmNRMnRVeFVGS0tXU0JabU9sd0lECkFRQUJvNElCcURDQ0FhUXdDUVlEVlIwVEJBSXdBREFSQmdsZ2hrZ0JodmhDQVFFRUJBTUNCa0F3Q3dZRFZSMFAKQkFRREFnV2dNRE1HQ1dDR1NBR0crRUlCRFFRbUZpUlBjR1Z1VTFOTUlFZGxibVZ5WVhSbFpDQlRaWEoyWlhJZwpRMlZ5ZEdsbWFXTmhkR1V3SFFZRFZSME9CQllFRkY5KzY3T0pWaFh2WC9qaVlMQnRpNXNUVDlRQk1JSGhCZ05WCkhTTUVnZGt3Z2RhQUZGOSs2N09KVmhYdlgvamlZTEJ0aTVzVFQ5UUJvWUc2cElHM01JRzBNUXN3Q1FZRFZRUUcKRXdKVlV6RU9NQXdHQTFVRUNCTUZVM1JoZEdVeEVUQVBCZ05WQkFjVENFeHZZMkZzYVhSNU1UZ3dOZ1lEVlFRSwpFeTl3WmxObGJuTmxJSGRsWWtOdmJtWnBaM1Z5WVhSdmNpQlRaV3htTFZOcFoyNWxaQ0JEWlhKMGFXWnBZMkYwClpURW9NQ1lHQ1NxR1NJYjNEUUVKQVJZWllXUnRhVzVBY0daVFpXNXpaUzVzYjJOaGJHUnZiV0ZwYmpFZU1Cd0cKQTFVRUF4TVZjR1pUWlc1elpTMDFPV1U1WmpVMVptUTVNVFE0Z2dFQU1CMEdBMVVkSlFRV01CUUdDQ3NHQVFVRgpCd01CQmdnckJnRUZCUWdDQWpBZ0JnTlZIUkVFR1RBWGdoVndabE5sYm5ObExUVTVaVGxtTlRWbVpEa3hORGd3CkRRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFMaFV3WnBROFFBVVlXcTJ2emw4ZjNOUDFmZXgvR1VwMlp2Z1RXbzEKUDkxTXYxNWJXL2ZGM1hRSm1ZZ2ppOVJ6bmd2eXJJVCthQU1YQ055SnpxcG4wd0VObjdCZFgwTDdzek13ZDluVQo2aGZlbTcvMGVoZGdkVFBWb2ZvOXVud05xakdRMWFEMFZZTk14YVRxdm1RQWpudUtEQzN4RzVkQ055ZzRiYVBvClJlQ2p0cDJaRmZDemZyelN1UmkvMmpLeU1nNndNdkRLVHlJM2dXTFlpazFyNUY4Q1VJeUJzS2wrMXRsYXBoV3UKNHI2NnJwT2VpMmhrbDF6Z08wa0JkOWZEM3RuNnc2YXNiQjAwYnF6QjNPeWlGc3NrL1B3SGV3TS9QbEd0ZC9ScgpVWjAyOWVVTnpCViswOU9aS1NCTDhyUmlCcEptV0FzRXdCNzRCZnBzRWx6eUcydz0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=</crt>
 		<prv>LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2Z0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktnd2dnU2tBZ0VBQW9JQkFRRGhyUklhd21OOTVRR0kKbHdGbm9YTUh3OXBrYU01eU9pODd0QzducEFsc05rbWN3OXRoRlV6ZUxPaUd2bmR3MllweFFuUDU3OUpTVlFUawo4MDhtTHU5NEx5ckdVRWxQOHBzNXVIRjQ4ZTVxTldzaENzbWJPSW5oV3FhS216K0tEZHdJT210UnVSMVJCQzBjCjRQNHc5dHdxY3ltUktvVjBaM05QLzJPQzZtZ2xreWRNRnc5S3VCMTZacXNKTm5PTWpsVS9vaGxFK3NLMFAzQm4KQnV1L081V0xvVkdVSDVMTDFmaG9GdTlLdHRPRGJubm5KNDczTXpackdRMVdRUVdScEhwWjBhQzRYMEV1MjJndwoxMnREYnhHNkNLK2c0T3oxbU1XT09wdWc4eWlxTEpKbWkwaHhaamU1NmNFaTNydW1TMUpQMjBWeERhMVRGUVVvCnBaSUZtWTZYQWdNQkFBRUNnZ0VCQU5QOEY4cU5HSm4wbUxrdVo0SnAxTHpSaTM3UU9FUnlSVllHemh5SEtOYSsKTSsyT3lLN3NMRFZ5NThWU2VxM0ZtdGNDL2lBajEyUEJPd1M1VEhyb2tjZEtQeHJqNWNtMGNYMEp0WVZQZEkzTgp1ZURpMmpmMUp3ZEplTEV3WGNJWGZMMDU2djlzTEk2aXBxRys4dWNacS93d0N6YXlRNFB4ZlE4RExmMldwTmZOCkc3MEliUFVVOVRNL1YrcU5CTXhUZkM5cWl0ZkRmYXA3U0UvZjVOeFpQYksvUGdqVmNqTlkzNHphRHNpVFdhV2gKOTBuUTJ3RGE4aHVFUVhvWUlPT25vS0dmTXllQW14VzRhcmRNUHhLRTc0VHYxbkIrTU9BSWcyR1RKMmJRVk16UgpBV1lIbkhnaVZSM2prR1YyK2dxcEFsR2Z4M3lzVnhIUEJ5bnpaZVQxU2VrQ2dZRUErU2NOekxIS3kzV29SS3Z4ClJUaWM4SmhkckZrWWdWYWppdy9SWlNjS0V1V2JuRkRBYWJrOEVYQ2FjcXUyR1lwZDdIVVB3MkMyanVZanZZUWgKN0paVUV3Zyt5MndFendWdHpZdU9VMUNqR0ZDNXFlQ0RXZFU1U0RGZGg5RzVLTlZkTjZSREVKOXdCRFNRdFJXOQpUV09YT3Y0STR6bDlGamdFVHpiY1VIUDZmRVVDZ1lFQTUrRFlROWZDQUJkdC84cXlXUXo0RXQrSmFkMFpXblpSCm9GYWhWTXFreERrOXJwdjZnaTV0N1Q5SHBIUFllY01PVS93WWR5MFdIV08wbjJBS0dmd2JMN1hnY1p1N055WEUKUDVCUGNTY2p0YXVZOUZlNUlFOWFsdHVtTDRKY3hSenNSWXp2NXdPQnMxS0xpTEYxcG5Xd3V5dFd2MTEwRW83TQpxRWl5TEU0WVl5c0NnWUJ1N0NVbm9XdlFvd1FUOXB6R25ZcTVUb3c5bzdqV05EVkJQdnlSVlEwV0ZxVHR0Y0hFCkQ5U2ZTd3RueSt5WmVGR1NhUmRvZTFFclUyaE1BbHg4RVAxREwrT00rdjAxRVl5dCt0aVZYUXdQVWprbVdTOEIKT24xekY0ODFYWGhhcG9zR3I1bXY5OXVOODcwTThhM0NtM2tEcVg5WmNnbXZiNmJ6Z1ZBYWZWZmlKUUtCZ1FDVAp2Nm90dUdudUl2KzlNRXZxQUNDRjdoZWg4L2IydEZPWXBmcVFpN3JuS1U0TFYyb016MGJPR0RjdkszMnhRRDk5CjlqRWtwdjdqWlNldk1jUGVBTXpWM3I4UHhOcEs3bTZZemZ4QXJsN0xvSGFLb3ViY0ZwUXpjZXYzYzhwbTh1SCsKQXlyTitXY0llejFic1MrMURHSzdNSWRLMG1KbWZNVWRLWTBXUEFEQUZ3S0JnRjNPU1pqVnMrMXoxSGlDRXpTWQo1K1YweFFJYzJiYUd5aXZTYnl4UFlEK25sSzVQS3dBOUhoQ2VVWmR5VDlQYzJtVEFJdHEyWm1ma0tOdVRleXA5CmZaWGs1UWFzSVdwZWlmY3hKUnJnUlZ6Z05yTFN6QTJuRUtFZ2taamZzbVdFdVMrUlFsNUdpMHpWL3BDVTlITloKankwUFFMeGdNR2lqWnpta3A4WFRHa1RVCi0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K</prv>
 	</cert>
+	<ppps></ppps>
+	<gateways></gateways>
 </pfsense>
