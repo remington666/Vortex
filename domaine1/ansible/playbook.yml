@@ -8,4 +8,9 @@
   roles:
     - ad/fs-file-server
 
+- name: Configuration des globales
+  hosts: all
+  roles:
+    - windows/network
+
 
