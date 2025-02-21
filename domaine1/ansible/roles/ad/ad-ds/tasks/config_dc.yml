@@ -1,3 +1,9 @@
+- name: Configuration du DNS
+  ansible.windows.win_dns_client: 
+    adapter_names: "Ethernet 2"
+    dns_servers: 127.0.0.1
+
+
 - name: Installer le rôle Active Directory
   win_feature:
     name: AD-Domain-Services
