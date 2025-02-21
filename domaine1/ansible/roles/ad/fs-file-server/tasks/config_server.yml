@@ -1,3 +1,8 @@
+- name: Configuration du DNS
+  ansible.windows.win_dns_client: 
+    adapter_names: "Ethernet 2"
+    dns_servers: 10.10.1.2
+
 - name: Installation du role Serveur de Fichier 
   win_feature: 
     name: FS-FileServer
