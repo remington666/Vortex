@@ -1,0 +1,10 @@
+- name: Configuration du DNS
+  ansible.windows.win_dns_client: 
+    adapter_names: "Ethernet 2"
+    dns_servers: 
+      - 10.10.1.2
+      - 127.0.0.1
+
+
+- name: Add a network static route
+  ansible.windows.win_command: route -p add 0.0.0.0 mask 0.0.0.0 10.10.1.1 metric 1
