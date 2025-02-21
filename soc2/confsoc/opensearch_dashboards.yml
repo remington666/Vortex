@@ -1,6 +1,6 @@
 server.host: 0.0.0.0
 server.port: 80
-opensearch.hosts: https://192.168.50.4:9200
+opensearch.hosts: https://192.168.1.2:9200
 opensearch.ssl.verificationMode: certificate
 #opensearch.username:
 #opensearch.password:

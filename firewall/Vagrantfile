@@ -11,8 +11,8 @@ Vagrant.configure("2") do |config|
         pfsense.vm.network "private_network", ip: "10.10.2.2"   # Interface Domaine 2
 
         
-        pfsense.vm.network "forwarded_port", guest: 80, host: 8080
-        pfsense.vm.network "forwarded_port", guest: 443, host: 4343
+        pfsense.vm.network "forwarded_port", guest: 80, host: 1234
+        pfsense.vm.network "forwarded_port", guest: 443, host: 4342
 
         pfsense.vm.provider "virtualbox" do |vb|
             vb.memory = "1024"
