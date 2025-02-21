@@ -2,7 +2,7 @@ nodes:
   # Wazuh indexer nodes
   indexer:
     - name: node-1
-      ip: "192.168.50.4"
+      ip: "192.168.1.2"
     #- name: node-2
     #  ip: "<indexer-node-ip>"
     #- name: node-3
@@ -13,7 +13,7 @@ nodes:
   # node, each one must have a node_type
   server:
     - name: wazuh-1
-      ip: "192.168.50.4"
+      ip: "192.168.1.2"
     #  node_type: master
     #- name: wazuh-2
     #  ip: "<wazuh-manager-ip>"
@@ -25,4 +25,4 @@ nodes:
   # Wazuh dashboard nodes
   dashboard:
     - name: dashboard
-      ip: "192.168.50.4"
+      ip: "192.168.1.2"

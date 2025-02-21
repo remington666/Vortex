@@ -1,10 +1,14 @@
-#   sudo ansible-galaxy collection install pfsensible.core
 Vagrant.configure("2") do |config|
  
   config.vm.define "ansible-controller" do |controller|
     controller.vm.hostname = "ansible-controller"
     controller.vm.box = "generic/debian12"
-    controller.vm.network "private_network", ip: "192.168.1.3"
+    controller.vm.network "private_network", ip: "10.10.2.4"
+
+
+    controller.vm.provision "file", source: "../conf/ansible.cfg", destination: "/home/vagrant/ansible.cfg"
+    controller.vm.provision "file", source: "../conf/inventory.ini", destination: "/home/vagrant/inventory.ini"
+    controller.vm.provision "file", source: "../conf/desactivation_carte_reseaux.yml", destination: "/home/vagrant/desactivation_carte_reseaux.yml"
 
     controller.vm.provision "shell", name: "testun", inline: <<-SHELL
       sudo apt-get update
@@ -16,29 +20,35 @@ Vagrant.configure("2") do |config|
     controller.vm.provision "shell", name: "testdeux", inline: <<-SHELL
       sudo apt-get install sshpass
     SHELL
-  end
 
-
-  # Machine 2 : Debian Test
-  config.vm.define "debian-test" do |testvm|
-    testvm.vm.hostname = "debian-test"
-    testvm.vm.box = "generic/debian12"
-    testvm.vm.network "private_network", ip: "192.168.1.4"
-
-    testvm.vm.provision "shell", name: "install_ssh", inline: <<-SHELL
-      sudo apt-get update
-      sudo apt-get install -y openssh-server
-      sudo systemctl enable ssh
-      sudo systemctl start ssh
-
-      # Ajout d'un utilisateur ansible avec accès SSH par mot de passe
-      sudo useradd -m -s /bin/bash ansible
-      echo 'ansible:ansible' | sudo chpasswd
-
-      # Autoriser la connexion par mot de passe (utile pour les premiers tests Ansible)
-      sudo sed -i 's/^#\?PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
-      sudo systemctl restart ssh
+    controller.vm.provision "shell", name: "testdeux", inline: <<-SHELL
+      sudo mkdir ansible
+      sudo mv /home/vagrant/ansible.cfg /home/vagrant/ansible/ansible.cfg
+      sudo mv /home/vagrant/inventory.ini /home/vagrant/ansible/inventory.ini
+      sudo mv /home/vagrant/desactivation_carte_reseaux.yml /home/vagrant/ansible/desactivation_carte_reseaux.yml
+      cd ansible
+      ansible-playbook -i inventory.ini desactivation_carte_reseaux.yml
     SHELL
   end
+
+
+  # # Machine 2 : Debian Test
+  # config.vm.define "debian-test" do |testvm|
+  #   testvm.vm.hostname = "debian-test"
+  #   testvm.vm.box = "generic/debian12"
+  #   testvm.vm.network "private_network", ip: "192.168.1.4"
+
+  #   testvm.vm.provision "shell", name: "install_ssh", inline: <<-SHELL
+  #     sudo apt-get update
+  #     sudo apt-get install -y openssh-server
+  #     sudo systemctl enable ssh
+  #     sudo systemctl start ssh
+  #     sudo useradd -m -s /bin/bash ansible
+  #     echo 'ansible:ansible' | sudo chpasswd
+  #     sudo sed -i 's/^#\?PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+  #     sudo systemctl restart ssh
+  #     sudo usermod -aG sudo ansible
+  #   SHELL
+  #end      
 
 end
