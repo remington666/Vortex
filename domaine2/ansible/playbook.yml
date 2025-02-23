@@ -1,6 +1,17 @@
-- name: Configuration du controlleur de domaine DC02
+- name: Configuration serveur
+  hosts: dc02
+  roles:
+    - ad/windows
+
+- name: Configuration du role ad-ds
   hosts: dc02
   roles:
     - ad/ad-ds
+
+
+- name: Configuration du role IIS
+  hosts: dc02
+  roles:
+    - ad/iis
 
 
