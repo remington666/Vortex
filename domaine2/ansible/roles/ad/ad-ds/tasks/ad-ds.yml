@@ -11,11 +11,11 @@
 
 - name: Création du domaine enfant
   win_shell: |
-    $User = "IRMA\Administrator"
+    $User = "IRMA.LOCAL\Administrator"
     $Password = "Azertyuiop68."
     $Cred = New-Object System.Management.Automation.PSCredential ($User, (ConvertTo-SecureString $Password -AsPlainText -Force))
     
-    $SafeCred = ConvertTo-SecureString 'Azertyuiop68.' -AsPlainText -Force
+    $SafeCred = ConvertTo-SecureString 'SAFE68000...' -AsPlainText -Force
 
     Install-ADDSDomain `
         -NoGlobalCatalog:$false `
@@ -34,4 +34,5 @@
         -SysvolPath "C:\Windows\SYSVOL" `
         -SafeModeAdministratorPassword $SafeCred `
         -Force:$true
-
+  become_user: 'Administrator'
+  become_method: runas
