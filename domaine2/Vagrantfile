@@ -1,8 +1,8 @@
 Vagrant.configure("2") do |config|
 
   config.vm.define "dc02" do|dc02|
+    dc02.vm.box = "jborean93/WindowsServer2016"
     dc02.vm.box_version = "1.2.0"
-    dc02.vm.box = "jborean93/WindowsServer2022"
     
     dc02.vm.hostname = "dc02"
     dc02.vm.guest = :windows
@@ -30,7 +30,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "iis" do|iis|
-    iis.vm.box = "jborean93/WindowsServer2012"
+    iis.vm.box = "jborean93/WindowsServer2016"
     iis.vm.box_version = "1.2.0"
 
     iis.vm.hostname = "IIS12"
