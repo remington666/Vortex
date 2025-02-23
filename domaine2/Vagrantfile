@@ -1,48 +1,45 @@
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
-
 Vagrant.configure("2") do |config|
 
-  # DOMAINE 1 
   config.vm.define "dc02" do|dc02|
+    dc02.vm.box = "jborean93/WindowsServer2016"
     dc02.vm.box_version = "1.2.0"
-    dc02.vm.box = "jborean93/WindowsServer2022"
     
     dc02.vm.hostname = "dc02"
     dc02.vm.guest = :windows
     dc02.winrm.transport = :ssl
-    dc02.vm.network "private_network", ip: "10.10.2.2"
+    dc02.vm.network "private_network", ip: "10.10.2.2", name: "vboxnet2"
     dc02.winrm.basic_auth_only = true
-    # dc02.vm.boot_timeout = 800
     dc02.winrm.ssl_peer_verification = false # ajout suite a l'erruer ssl_peer_verification 
     
     
-    # dc02.vm.provision "shell", path: "scripts/DeactivateNetworkInterfaces.ps1"
-    # dc02.vm.provision "shell", path: "scripts/ad/ad-ds.ps1"
     dc02.vm.provider "virtualbox" do |vb|
       vb.name = "DC02"
       vb.memory = 2048 # 2 Go de RAM
       vb.cpus = 2 # 2 processeurs
-      
     end
+
+    dc02.vm.provision :ansible do |ansible|
+      ansible.limit = 'all'
+      ansible.playbook = 'ansible/playbook.yml'
+      ansible.verbose =  true
+      ansible.limit = "dc02"  # Exécute seulement dc02
+      ansible.host_vars = {
+      "dc02" => {"ansible_winrm_server_cert_validation" => "ignore"}
+    }
+    end 
   end
-  
+
   config.vm.define "iis" do|iis|
-    iis.vm.box = "jborean93/WindowsServer2012"
+    iis.vm.box = "jborean93/WindowsServer2016"
     iis.vm.box_version = "1.2.0"
 
     iis.vm.hostname = "IIS12"
-    iis.vm.network "private_network", ip: "10.10.2.3"
+    iis.vm.network "private_network", ip: "10.10.2.3", name: "vboxnet2"
     iis.vm.guest = :windows
     iis.winrm.transport = :ssl
     iis.winrm.basic_auth_only = true
-    # iis.vm.boot_timeout = 600
     iis.winrm.ssl_peer_verification = false # ajout suite a l'erruer ssl_peer_verification 
 
-    # iis.vm.provision "shell", path: 'scripts/ad/srv-file-join-domain.ps1'
-    # iis.vm.provision "shell", path: 'scripts/ad/srv-file-join-domain.ps1'
-
-     # ressources
     iis.vm.provider "virtualbox" do |vb|
       vb.name = "IIS12"
       vb.memory = 2048 # 2 Go de RAM

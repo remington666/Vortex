@@ -1,0 +1,24 @@
+- name: Configuration du DNS
+  ansible.windows.win_dns_client: 
+    adapter_names: "Ethernet 2"
+    dns_servers: 
+      - 10.10.1.2
+      - 127.0.0.1
+
+
+- name: Add a network static route
+  ansible.windows.win_command: route -p add 0.0.0.0 mask 0.0.0.0 10.10.2.1 metric 1
+
+- name: Desactivation des firewall
+  ansible.windows.win_powershell:
+    script: |
+      Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+
+
+- name: Configuration réseaux (dns et ajustement des metric)
+  win_shell: |
+    Set-NetIPInterface -InterfaceAlias "Ethernet 2" -InterfaceMetric 10
+    Set-NetIPInterface -InterfaceAlias "Ethernet" -InterfaceMetric 50
+
+    Set-DnsClientServerAddress -InterfaceAlias "Ethernet 2" -ServerAddresses ("10.10.1.2")
+

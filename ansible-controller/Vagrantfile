@@ -1,6 +1,6 @@
 Vagrant.configure("2") do |config|
  
-  config.vm.define "ansible-controller" do |controller|
+config.vm.define "ansible-controller" do |controller|
     controller.vm.hostname = "ansible-controller"
     controller.vm.box = "generic/debian12"
     controller.vm.network "private_network", ip: "10.10.2.4"
@@ -10,12 +10,12 @@ Vagrant.configure("2") do |config|
     controller.vm.provision "file", source: "../conf/inventory.ini", destination: "/home/vagrant/inventory.ini"
     controller.vm.provision "file", source: "../conf/desactivation_carte_reseaux.yml", destination: "/home/vagrant/desactivation_carte_reseaux.yml"
 
-    controller.vm.provision "shell", name: "testun", inline: <<-SHELL
+  controller.vm.provision "shell", name: "testun", inline: <<-SHELL
       sudo apt-get update
       sudo apt-get install -y software-properties-common
       sudo sudo-add-repository --yes --update ppa:ansible/ansible
       sudo apt-get install -y ansible
-      SHELL
+    SHELL
 
     controller.vm.provision "shell", name: "testdeux", inline: <<-SHELL
       sudo apt-get install sshpass
@@ -50,5 +50,6 @@ Vagrant.configure("2") do |config|
   #     sudo usermod -aG sudo ansible
   #   SHELL
   #end      
+
 
 end

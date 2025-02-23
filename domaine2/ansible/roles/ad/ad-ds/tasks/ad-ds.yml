@@ -1,7 +1,38 @@
-- name: Create a child domain katrina.irma.local
-  microsoft.ad.domain_child:
-    dns_domain_name: katrina.irma.local
-    domain_admin_user: administrator@irma.local
-    domain_admin_password: Azertyuiop68.
-    safe_mode_password: password123!
-    reboot: true
+- name: Installer le rôle Active Directory
+  win_feature:
+    name: AD-Domain-Services
+    include_management_tools: yes
+    state: present
+
+- name: Modification du mot de passe Administrateur
+  win_shell: 'net user Administrator Azertyuiop68.'
+  become_user: 'Administrator'
+  become_method: runas
+
+- name: Création du domaine enfant
+  win_shell: |
+    $User = "IRMA.LOCAL\Administrator"
+    $Password = "Azertyuiop68."
+    $Cred = New-Object System.Management.Automation.PSCredential ($User, (ConvertTo-SecureString $Password -AsPlainText -Force))
+    
+    $SafeCred = ConvertTo-SecureString 'SAFE68000...' -AsPlainText -Force
+
+    Install-ADDSDomain `
+        -NoGlobalCatalog:$false `
+        -CreateDnsDelegation:$true `
+        -Credential $Cred `
+        -DatabasePath "C:\Windows\NTDS" `
+        -DomainMode "WinThreshold" `
+        -DomainType "ChildDomain" `
+        -InstallDns:$true `
+        -LogPath "C:\Windows\NTDS" `
+        -NewDomainName "katrina" `
+        -NewDomainNetbiosName "KATRINA" `
+        -ParentDomainName "irma.local" `
+        -NoRebootOnCompletion:$false `
+        -SiteName "Default-First-Site-Name" `
+        -SysvolPath "C:\Windows\SYSVOL" `
+        -SafeModeAdministratorPassword $SafeCred `
+        -Force:$true
+  become_user: 'Administrator'
+  become_method: runas
