@@ -1,23 +1,28 @@
 Vagrant.configure("2") do |config|
 
   config.vm.define "wazuhserver" do |wazuhserver|
-    wazuhserver.vm.box = "ubuntu/focal64"
+    wazuhserver.vm.box = "generic/debian12"
     wazuhserver.vm.network "forwarded_port", guest: 80, host: 8080
     wazuhserver.vm.network "private_network", type: "static", ip: "192.168.1.2"
     wazuhserver.vm.provider "virtualbox" do |vb|
       vb.memory = "4096"
       vb.cpus = 4
     end
-    wazuhserver.vm.provision "file", source: "/vagrant/conf/config.yml", destination: "/home/vagrant/config.yml"
-    wazuhserver.vm.provision "file", source: "/vagrant/conf/filebeat.yml", destination: "/home/vagrant/filebeat.yml"
-    wazuhserver.vm.provision "file", source: "/vagrant/conf/opensearch_dashboards.yml", destination: "/home/vagrant/opensearch_dashboards.yml"
-    wazuhserver.vm.provision "file", source: "/vagrant/conf/opensearch.yml", destination: "/home/vagrant/opensearch.yml"
+
+    wazuhserver.vm.provision "file", source: "/github/Vortex/soc/confsoc/config.yml", destination: "/home/vagrant/config.yml"
+    wazuhserver.vm.provision "file", source: "/github/Vortex/soc/confsoc/filebeat.yml", destination: "/home/vagrant/filebeat.yml"
+    wazuhserver.vm.provision "file", source: "/github/Vortex/soc/confsoc/opensearch_dashboards.yml", destination: "/home/vagrant/opensearch_dashboards.yml"
+    wazuhserver.vm.provision "file", source: "/github/Vortex/soc/confsoc/opensearch.yml", destination: "/home/vagrant/opensearch.yml"
     
     wazuhserver.vm.provision "shell", name: "part1", inline: <<-SHELL
       sudo apt-get install -y gnupg apt-transport-https curl
       sudo curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | sudo gpg --no-default-keyring --keyring gnupg-ring:/usr/share/keyrings/wazuh.gpg --import && sudo chmod 644 /usr/share/keyrings/wazuh.gpg
       sudo echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" | sudo tee -a /etc/apt/sources.list.d/wazuh.list
+      echo "postfix postfix/main_mailer_type select No configuration" | sudo debconf-set-selections
+      sudo DEBIAN_FRONTEND=noninteractive apt-get install -y postfix
       sudo apt update && sudo apt upgrade -y && sudo apt-get install -y debconf adduser procps curl gnupg apt-transport-https filebeat debhelper libcap2-bin
+    SHELL
+    wazuhserver.vm.provision "shell", name: "postfix", inline: <<-SHELL
       sudo curl -sO https://packages.wazuh.com/4.10/wazuh-certs-tool.sh # && sudo curl -sO https://packages.wazuh.com/4.10/config.yml
       if [ -f wazuh-certs-tool.sh ]; then
         sudo bash /home/vagrant/wazuh-certs-tool.sh -A
@@ -54,6 +59,7 @@ Vagrant.configure("2") do |config|
       sudo curl -k -u admin:admin https://192.168.1.2:9200
       sudo curl -k -u admin:admin https://192.168.1.2:9200/_cat/nodes?v
     SHELL
+
     wazuhserver.vm.provision "shell", name: "part6", inline: <<-SHELL
       sudo systemctl daemon-reload
       sudo systemctl enable wazuh-manager
@@ -71,8 +77,8 @@ Vagrant.configure("2") do |config|
     SHELL
 
     wazuhserver.vm.provision "shell", name: "part9", inline: <<-SHELL
-      sudo echo admin | filebeat keystore add username --stdin --force
-      sudo echo admin | filebeat keystore add password --stdin --force
+      sudo echo admin | sudo filebeat keystore add username --stdin --force
+      sudo echo admin | sudo filebeat keystore add password --stdin --force
       sudo curl -so /etc/filebeat/wazuh-template.json https://raw.githubusercontent.com/wazuh/wazuh/v4.7.2/extensions/elasticsearch/7.x/wazuh-template.json
       sudo chmod go+r /etc/filebeat/wazuh-template.json
       sudo curl -s https://packages.wazuh.com/4.x/filebeat/wazuh-filebeat-0.3.tar.gz | sudo tar -xvz -C /usr/share/filebeat/module
@@ -124,6 +130,12 @@ Vagrant.configure("2") do |config|
       sudo systemctl enable wazuh-manager
       sudo systemctl start wazuh-manager
     SHELL
+    
+    wazuhserver.vm.provision "shell", name: "install_ssh", inline: <<-SHELL
+      sudo useradd -m -s /bin/bash ansible && echo "ansible:ansible" | sudo chpasswd
+      sudo usermod -aG sudo ansible
+    SHELL
+
   end
 
 
