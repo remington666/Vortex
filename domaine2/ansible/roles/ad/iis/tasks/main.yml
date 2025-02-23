@@ -1,0 +1,2 @@
+- name: Configuration du role IIS (Web-Server)
+  import_tasks: iis.yml
