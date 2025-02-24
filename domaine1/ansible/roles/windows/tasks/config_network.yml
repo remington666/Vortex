@@ -1,2 +1,0 @@
-- name: Desactivation des interfaces réseaux de vagrant
-  win_shell: Disable-NetAdapter "Ethernet" -Confirm:$true

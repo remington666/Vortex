@@ -33,7 +33,7 @@ Vagrant.configure("2") do |config|
     iis.vm.box = "jborean93/WindowsServer2016"
     iis.vm.box_version = "1.2.0"
 
-    iis.vm.hostname = "IIS12"
+    iis.vm.hostname = "IIS16"
     iis.vm.network "private_network", ip: "10.10.2.3", name: "vboxnet2"
     iis.vm.guest = :windows
     iis.winrm.transport = :ssl
@@ -41,10 +41,21 @@ Vagrant.configure("2") do |config|
     iis.winrm.ssl_peer_verification = false # ajout suite a l'erruer ssl_peer_verification 
 
     iis.vm.provider "virtualbox" do |vb|
-      vb.name = "IIS12"
+      vb.name = "IIS16"
       vb.memory = 2048 # 2 Go de RAM
       vb.cpus = 2 # 2 processeurs
     end
+
+
+    iis.vm.provision :ansible do |ansible|
+      ansible.limit = 'all'
+      ansible.playbook = 'ansible/playbook.yml'
+      ansible.verbose =  true
+      ansible.limit = "iis"  # Exécute seulement iis
+      ansible.host_vars = {
+      "iis" => {"ansible_winrm_server_cert_validation" => "ignore"}
+    }
+    end 
   end
   
   config.vm.define "ubuntu_server" do|ubuntu_server|
