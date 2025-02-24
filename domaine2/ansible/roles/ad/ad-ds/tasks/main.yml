@@ -1,2 +1,2 @@
-- name: Configuration generale du serveur
-  import_tasks: config_dc.yml
+- name: Configuration du role ad-ds
+  import_tasks: ad-ds.yml
