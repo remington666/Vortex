@@ -1,16 +1,16 @@
-- name: Configuration serveur
-  hosts: dc02
+- name: Configuration des serveurs
+  hosts: dc02,iis
   roles:
     - ad/windows
 
-- name: Configuration du role ad-ds
+- name: Taches role ad-ds
   hosts: dc02
   roles:
     - ad/ad-ds
 
 
-- name: Configuration du role IIS
-  hosts: dc02
+- name: Taches role IIS
+  hosts: iis
   roles:
     - ad/iis
 
