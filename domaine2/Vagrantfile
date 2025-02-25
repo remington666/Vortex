@@ -64,12 +64,11 @@ Vagrant.configure("2") do |config|
     ubuntu_server.vm.hostname = "ubuntuSrv"
 
     ubuntu_server.vm.network "private_network", ip: "10.10.1.4"
-
     ubuntu_server.vm.provider "virtualbox" do |vb|
       vb.name = "ubuntuSrv"
       vb.memory = 2048 # 2 Go de RAM
       vb.cpus = 2 # 2 processeurs
-      end
+    end
 
     ubuntu_server.vm.provision "shell", inline: <<-SHELL
       echo "vagrant"|sudo -S apt update -y  && sudo -S apt upgrade -y
@@ -78,4 +77,32 @@ Vagrant.configure("2") do |config|
     SHELL
   end
 
+  config.vm.define "windows10" do|windows10|
+    windows10.vm.box = "gusztavvargadr/windows-10"
+    windows10.vm.box_version = "2202.0.2409"
+    windows10.vm.hostname = "windows10"
+
+    windows10.vm.network "private_network", ip: "10.10.1.4"
+    windows10.vm.boot_timeout = 800
+    windows10.vm.guest = :windows
+    windows10.winrm.transport = :ssl
+    windows10.winrm.basic_auth_only = true
+    windows10.winrm.ssl_peer_verification = false # ajout suite a l'erruer ssl_peer_verification 
+
+    windows10.vm.provider "virtualbox" do |vb|
+      vb.name = "windows10"
+      vb.memory = 1024 # 2 Go de RAM
+      vb.cpus = 1 # 2 processeurs
+    end
+
+    windows10.vm.provision :ansible do |ansible|
+        ansible.limit = 'all'
+        ansible.playbook = 'ansible/playbook.yml'
+        ansible.verbose =  true
+        ansible.limit = "windows10"  # Exécute seulement windows10
+        ansible.host_vars = {
+        "windows10" => {"ansible_winrm_server_cert_validation" => "ignore"}
+      }
+    end 
+  end 
 end
