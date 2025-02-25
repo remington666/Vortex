@@ -1,5 +1,5 @@
 - name: Configuration des serveurs
-  hosts: dc02,iis
+  hosts: dc02,iis,windows
   roles:
     - ad/windows
 
