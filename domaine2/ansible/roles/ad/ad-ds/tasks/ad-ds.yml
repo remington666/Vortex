@@ -36,3 +36,6 @@
         -Force:$true
   become_user: 'Administrator'
   become_method: runas
+
+- name: Reboot host after create domain child
+  win_reboot:
