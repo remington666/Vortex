@@ -1,0 +1,27 @@
+Vagrant.configure("2") do |config|
+  config.vm.define "threat_emul" do|threat_emul|
+    threat_emul.vm.box = "kalilinux/rolling"
+    threat_emul.vm.name = "kali.redteam"
+    threat_emul.vm.hostname = "kali.redteam"
+    threat_emul.vm.network "private_network", ip: "192.168.1.2" 
+    threat_emul.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+      vb.cpus = 2
+    end  
+    threat_emul.vm.provision "shell", inline: <<-SHELL
+        sudo apt update -y && sudo apt upgrade -y && sudo apt install git-all python3-pip python3-venv npm -y
+        sudo systemctl set-default graphical.target
+
+        cd /opt
+        git clone https://github.com/mitre/caldera.git --recursive
+        
+        cd /opt/caldera
+        python3 -m venv myenv
+        source myenv/bin/activate
+        python3 -m pip install --upgrade pip
+        pip3 install -r requirements.txt
+        python3 server.py --insecure --build
+
+      SHELL
+  end
+end

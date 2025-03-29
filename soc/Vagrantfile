@@ -2,6 +2,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "wazuhserver" do |wazuhserver|
     wazuhserver.vm.box = "generic/debian12"
+    wazuhserver.vm.hostname = "wazuhserver"
     wazuhserver.vm.network "forwarded_port", guest: 80, host: 8080
     wazuhserver.vm.network "forwarded_port", guest: 22, host: 2027
     wazuhserver.vm.network "private_network", type: "static", ip: "192.168.1.2"
@@ -9,11 +10,13 @@ Vagrant.configure("2") do |config|
       vb.memory = "4096"
       vb.cpus = 4
     end
+    wazuhserver.vm.synced_folder ".", "/vagrant"
 
     wazuhserver.vm.provision "file", source: "confsoc/config.yml", destination: "/home/vagrant/config.yml"
     wazuhserver.vm.provision "file", source: "confsoc/filebeat.yml", destination: "/home/vagrant/filebeat.yml"
     wazuhserver.vm.provision "file", source: "confsoc/opensearch_dashboards.yml", destination: "/home/vagrant/opensearch_dashboards.yml"
     wazuhserver.vm.provision "file", source: "confsoc/opensearch.yml", destination: "/home/vagrant/opensearch.yml"
+
     
     wazuhserver.vm.provision "shell", name: "part1", inline: <<-SHELL
       sudo apt-get install -y gnupg apt-transport-https curl
