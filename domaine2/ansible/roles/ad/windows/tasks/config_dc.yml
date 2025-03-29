@@ -20,5 +20,4 @@
     Set-NetIPInterface -InterfaceAlias "Ethernet 2" -InterfaceMetric 10
     Set-NetIPInterface -InterfaceAlias "Ethernet" -InterfaceMetric 50
 
-    Set-DnsClientServerAddress -InterfaceAlias "Ethernet 2" -ServerAddresses ("10.10.1.2")
-
+    Set-DnsClientServerAddress -InterfaceAlias "Ethernet 2" -ServerAddresses ("10.10.1.2", "10.10.2.2")

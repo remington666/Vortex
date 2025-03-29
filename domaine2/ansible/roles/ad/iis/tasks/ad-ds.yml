@@ -6,6 +6,8 @@
     $Cred = New-Object System.Management.Automation.PSCredential ($User, (ConvertTo-SecureString $Password -AsPlainText -Force))
 
     Add-Computer -DomainName $Domain  -Credential $Cred  -Force
+  become_user: 'Administrator'
+  become_method: runas
 
 - name: Reboot host after domain join
   win_reboot:
