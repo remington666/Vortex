@@ -3,7 +3,7 @@ Vagrant.configure("2") do |config|
     threat_emul.vm.box = "kalilinux/rolling"
     threat_emul.vm.name = "kali.redteam"
     threat_emul.vm.hostname = "kali.redteam"
-    threat_emul.vm.network "private_network", ip: "192.168.1.2" 
+    threat_emul.vm.network "private_network", ip: "192.168.1.2", virtualbox__intnet: "vboxnet4"
     threat_emul.vm.provider "virtualbox" do |vb|
       vb.memory = "2048"
       vb.cpus = 2
@@ -25,3 +25,4 @@ Vagrant.configure("2") do |config|
       SHELL
   end
 end
+

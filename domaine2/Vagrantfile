@@ -8,7 +8,7 @@ Vagrant.configure("2") do |config|
     dc02.vm.hostname = "dc02"
     dc02.vm.guest = :windows
     dc02.winrm.transport = :ssl
-    dc02.vm.network "private_network", ip: "10.10.2.2", name: "vboxnet2"
+    dc02.vm.network "private_network", ip: "10.10.2.2", virtualbox__intnet: "vboxnet2"
     dc02.winrm.basic_auth_only = true
     dc02.vm.boot_timeout = 400
     dc02.winrm.ssl_peer_verification = false # ajout suite a l'erruer ssl_peer_verification 
@@ -35,7 +35,7 @@ Vagrant.configure("2") do |config|
     iis.vm.box = "stromweld/windows-2016"
     iis.vm.box_version = "202503.09.0"
     iis.vm.hostname = "IIS16"
-    iis.vm.network "private_network", ip: "10.10.2.3", name: "vboxnet2"
+    iis.vm.network "private_network", ip: "10.10.2.3", virtualbox__intnet: "vboxnet2"
     iis.vm.guest = :windows
     iis.winrm.transport = :ssl
     iis.vm.boot_timeout = 400
@@ -64,7 +64,7 @@ Vagrant.configure("2") do |config|
     windows.vm.box_version = "202503.09.0"
     windows.vm.hostname = "windows"
 
-    windows.vm.network "private_network", ip: "10.10.2.4", name: "vboxnet2"
+    windows.vm.network "private_network", ip: "10.10.2.4", virtualbox__intnet: "vboxnet2"
     windows.vm.boot_timeout = 400
     windows.vm.guest = :windows
     windows.winrm.transport = :ssl
