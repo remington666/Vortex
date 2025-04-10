@@ -61,7 +61,7 @@ Vagrant.configure("2") do |config|
   
   config.vm.define "windows" do|windows|
     windows.vm.box = "mrlesmithjr/windows10"
-    windows.vm.box_version = "1580850073"
+    windows.vm.box_version = "1574780096"
     windows.vm.hostname = "windows"
 
     windows.vm.network "private_network", ip: "10.10.2.4", virtualbox__intnet: "vboxnet2"
