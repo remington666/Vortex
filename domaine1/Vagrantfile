@@ -18,8 +18,8 @@ Vagrant.configure("2") do |config|
     
     dc01.vm.provider "virtualbox" do |vb|
       vb.name = "DC01"
-      vb.memory = 2048 # 2 Go de RAM
-      vb.cpus = 2 # 2 processeurs
+      vb.memory = 3072 # 2 Go de RAM
+      vb.cpus = 3 # 2 processeurs
     end
 
     dc01.vm.provision :ansible do |ansible|
@@ -47,8 +47,8 @@ Vagrant.configure("2") do |config|
 
     file_srv.vm.provider "virtualbox" do |vb|
       vb.name = "FILE_SRV"
-      vb.memory = 2048 # 2 Go de RAM
-      vb.cpus = 2 # 2 processeurs
+      vb.memory = 3072 # 2 Go de RAM
+      vb.cpus = 3 # 2 processeurs
     end
 
     file_srv.vm.provision :ansible do |ansible|
@@ -71,7 +71,7 @@ Vagrant.configure("2") do |config|
     debian.vm.provider "virtualbox" do |vb|
       vb.name = "debian"
       vb.memory = 2048 # 2 Go de RAM
-      vb.cpus = 2 # 2 processeurs
+      vb.cpus = 1 # 2 processeurs
       end
 
     debian.vm.provision "shell", inline: <<-SHELL
