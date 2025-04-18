@@ -18,8 +18,8 @@ Vagrant.configure("2") do |config|
 
         pfsense.vm.provider "virtualbox" do |vb|
             vb.name = "pfsense"
-            vb.memory = "1024"
-            vb.cpus = 2
+            vb.memory = "2048"
+            vb.cpus = 1
         end
         pfsense.vm.provision "shell", name: "import config", inline: <<-SHELL
             rm /conf/config.xml && mv /tmp/pfsense.xml /conf/config.xml

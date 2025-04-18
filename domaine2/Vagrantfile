@@ -16,8 +16,8 @@ Vagrant.configure("2") do |config|
     
     dc02.vm.provider "virtualbox" do |vb|
       vb.name = "DC02"
-      vb.memory = 2048 # 2 Go de RAM
-      vb.cpus = 2 # 2 processeurs
+      vb.memory = 3072 # 2 Go de RAM
+      vb.cpus = 3 # 2 processeurs
     end
 
     dc02.vm.provision :ansible do |ansible|
@@ -43,8 +43,8 @@ Vagrant.configure("2") do |config|
 
     iis.vm.provider "virtualbox" do |vb|
       vb.name = "IIS16"
-      vb.memory = 2048 # 2 Go de RAM
-      vb.cpus = 2 # 2 processeurs
+      vb.memory = 3072 # 2 Go de RAM
+      vb.cpus = 3 # 2 processeurs
     end
 
 
@@ -73,8 +73,8 @@ Vagrant.configure("2") do |config|
 
     windows.vm.provider "virtualbox" do |vb|
       vb.name = "windows10"
-      vb.memory = 1024 # 2 Go de RAM
-      vb.cpus = 2 # 2 processeurs
+      vb.memory = 3072 # 2 Go de RAM
+      vb.cpus = 1 # 2 processeurs
     end
 
     windows.vm.provision :ansible do |ansible|
