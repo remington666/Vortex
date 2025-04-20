@@ -1,46 +1,39 @@
 Vagrant.configure("2") do |config|
  
-config.vm.define "ansible-controller" do |controller|
-    controller.vm.hostname = "ansible-controller"
-    controller.vm.box = "generic/debian12"
+  config.vm.define "ansible-controller" do |controller|
+      controller.vm.hostname = "ansible-controller"
+      controller.vm.box = "generic/debian12"
 
-    controller.vm.network "private_network", ip: "192.168.1.254", virtualbox__intnet: "vboxnet5" # interface SOC
-    controller.vm.network "private_network", ip: "192.168.2.254", virtualbox__intnet: "vboxnet4" # Interface Red Team
-    controller.vm.network "private_network", ip: "10.10.0.254", virtualbox__intnet: "vboxnet3"   # Interface Poste client
-    controller.vm.network "private_network", ip: "10.10.1.254", virtualbox__intnet: "vboxnet1"   # Interface Domaine 1
-    controller.vm.network "private_network", ip: "10.10.2.254", virtualbox__intnet: "vboxnet2"   # Interface Domaine 2
+      controller.vm.network "private_network", ip: "192.168.1.254", virtualbox__intnet: "vboxnet5" # interface SOC
+      controller.vm.network "private_network", ip: "192.168.2.254", virtualbox__intnet: "vboxnet4" # Interface Red Team
+      controller.vm.network "private_network", ip: "10.10.0.254", virtualbox__intnet: "vboxnet3"   # Interface Poste client
+      controller.vm.network "private_network", ip: "10.10.1.254", virtualbox__intnet: "vboxnet1"   # Interface Domaine 1
+      controller.vm.network "private_network", ip: "10.10.2.254", virtualbox__intnet: "vboxnet2"   # Interface Domaine 2
+      
+      controller.vm.provision "file", source: "ansible/", destination: "/tmp/"
+      
+      controller.vm.provider "virtualbox" do |vb|
+        vb.name = "ansibleController"
+        vb.memory = 1024 # 2 Go de RAM
+        vb.cpus = 1 # 2 processeurs
+      end
     
-    controller.vm.provision "file", source: "ansible/", destination: "/tmp/"
-    
-    controller.vm.provider "virtualbox" do |vb|
-      vb.name = "ansibleController"
-      vb.memory = 1024 # 2 Go de RAM
-      vb.cpus = 1 # 2 processeurs
-    end
-  
-    controller.vm.provision "shell", name: "ansible package setup", inline: <<-SHELL
-      UBUNTU_CODENAME=jammy
-      wget -O- "https://keyserver.ubuntu.com/pks/lookup?fingerprint=on&op=get&search=0x6125E2A8C77F2818FB7BD15B93C4A3FD7BB9C367" | gpg --dearmour -o /usr/share/keyrings/ansible-archive-keyring.gpg
-      echo "deb [signed-by=/usr/share/keyrings/ansible-archive-keyring.gpg] http://ppa.launchpad.net/ansible/ansible/ubuntu $UBUNTU_CODENAME main" | tee /etc/apt/sources.list.d/ansible.list 
+      controller.vm.provision "shell", name: "ansible package setup", inline: <<-SHELL
+          UBUNTU_CODENAME=jammy
+          wget -O- "https://keyserver.ubuntu.com/pks/lookup?fingerprint=on&op=get&search=0x6125E2A8C77F2818FB7BD15B93C4A3FD7BB9C367" | gpg --dearmour -o /usr/share/keyrings/ansible-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/ansible-archive-keyring.gpg] http://ppa.launchpad.net/ansible/ansible/ubuntu $UBUNTU_CODENAME main" | tee /etc/apt/sources.list.d/ansible.list 
 
-      sudo apt upadte --fix-missing && sudo apt update && sudo apt upgrade -y && sudo apt install ansible
-    SHELL
+          sudo apt update --fix-missing && sudo apt update 
+          sudo apt install ansible -y
+      SHELL
+      
+      controller.vm.provision "shell", name: "run config VMs", inline: <<-SHELL
+          cd /tmp/ansible/
+          ansible-playbook -i hosts.yml playbook.yml
+      SHELL
 
-    # controller.vm.provision "shell", name: "ansible package setup", inline: <<-SHELL
-    #   UBUNTU_CODENAME=jammy
-    #   wget -O- "https://keyserver.ubuntu.com/pks/lookup?fingerprint=on&op=get&search=0x6125E2A8C77F2818FB7BD15B93C4A3FD7BB9C367" | gpg --dearmour -o /usr/share/keyrings/ansible-archive-keyring.gpg
-    #   echo "deb [signed-by=/usr/share/keyrings/ansible-archive-keyring.gpg] http://ppa.launchpad.net/ansible/ansible/ubuntu $UBUNTU_CODENAME main" | tee /etc/apt/sources.list.d/ansible.list 
-    # SHELL
-  
   end
 end
-
-
-
-
-
-
-
 
 
     # controller.vm.provision "shell", name: "testdeux", inline: <<-SHELL
