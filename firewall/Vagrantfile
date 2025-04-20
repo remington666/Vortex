@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
 
         pfsense.vm.network "forwarded_port", guest: 443, host: 4343
 
-        pfsense.vm.provision "file", source: "../conf/pfsense.xml", destination: "/tmp/pfsense.xml"
+        pfsense.vm.provision "file", source: "conf_pfsense.xml", destination: "/tmp/pfsense.xml"
 
 
         pfsense.vm.provider "virtualbox" do |vb|
