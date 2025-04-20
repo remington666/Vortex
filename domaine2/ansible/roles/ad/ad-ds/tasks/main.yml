@@ -1,2 +1,0 @@
-- name: Configuration du role ad-ds
-  import_tasks: ad-ds.yml

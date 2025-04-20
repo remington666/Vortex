@@ -1,4 +1,0 @@
-- name: Desactivation des interfaces réseaux de vagrant
-  ansible.windows.win_powershell: 
-    script: | 
-      Disable-NetAdapter "Ethernet" -Confirm:$false

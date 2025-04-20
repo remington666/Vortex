@@ -1,2 +1,0 @@
-- name: Configuration réseaux
-  import_tasks: config_network.yml 
