@@ -29,3 +29,8 @@
   hosts: domaine1_windows
   roles:
     - windows/network
+
+- name: Configuration wazuh serveur
+  hosts: wazuh
+  roles:
+    - linux/network
