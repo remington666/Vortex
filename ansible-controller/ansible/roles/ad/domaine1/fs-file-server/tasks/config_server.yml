@@ -1,0 +1,28 @@
+- name: Configuration du DNS
+  ansible.windows.win_dns_client: 
+    adapter_names: "Ethernet 2"
+    dns_servers: 10.10.1.2
+
+- name: Installation du role Serveur de Fichier 
+  win_feature: 
+    name: FS-FileServer
+    state: present
+
+- name: Configuration réseaux
+  win_shell: |
+    Set-NetIPInterface -InterfaceAlias "Ethernet 2" -InterfaceMetric 10
+    Set-NetIPInterface -InterfaceAlias "Ethernet" -InterfaceMetric 50
+
+    Set-DnsClientServerAddress -InterfaceAlias "Ethernet 2" -ServerAddresses ("10.10.1.2")
+
+- name: Joindre le domaine
+  win_shell: | 
+    $Domain = "irma.local"
+    $User = "Administrator@irma.local"
+    $Password = "Azertyuiop68."
+    $Cred = New-Object System.Management.Automation.PSCredential ($User, (ConvertTo-SecureString $Password -AsPlainText -Force))
+
+    Add-Computer -DomainName $Domain  -Credential $Cred  -Force
+
+- name: Reboot host after domain join
+  win_reboot:

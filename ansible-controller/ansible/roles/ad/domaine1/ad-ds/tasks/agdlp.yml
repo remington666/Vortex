@@ -1,0 +1,31 @@
+- name: Importation de listes d'utiliateurs 
+  include_vars: 
+    file: users_list.yml
+
+- name: Ajouter l'utilisateur au groupe correspondant
+  community.windows.win_domain_group_membership:
+    name: "{{ item.group }}"
+    members:  
+      - "{{ item.identity}}"
+    state: present
+
+  loop: "{{ users }}" 
+
+- name: Ajouter les groupe de droit d'ecriture
+  community.windows.win_domain_group_membership:
+    name: "{{ item.gdl_rw }}"
+    members:  
+      - "{{ item.group }}"
+    state: present
+
+  loop: "{{ users }}" 
+  when: item.gdl_rw != false #ignore l'iteration si c'est false
+
+- name: Ajouter les groupe de droit de lecture
+  community.windows.win_domain_group_membership:
+    name: "{{ item.gdl_ro }}"
+    members:  
+      - "{{ item.group}}"
+    state: present
+
+  loop: "{{ users }}" 

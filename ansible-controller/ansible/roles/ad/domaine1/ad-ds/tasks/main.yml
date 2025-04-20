@@ -1,0 +1,20 @@
+- name: Configuration du serveur
+  import_tasks: config_dc.yml 
+
+- name: Installation et configuration du role AD-DS
+  import_tasks: ad-ds.yml 
+
+- name: Création de OU
+  import_tasks: ou.yml 
+
+- name: Creation de groupe
+  import_tasks: groupe.yml 
+
+- name: Création d'utilisateurs
+  import_tasks: users.yml 
+
+- name: Methode AGDLP
+  import_tasks: agdlp.yml  
+
+- name: Deployement des GPO
+  import_tasks: gpo.yml 
