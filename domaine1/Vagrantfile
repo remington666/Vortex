@@ -21,16 +21,6 @@ Vagrant.configure("2") do |config|
       vb.memory = 3072 # 2 Go de RAM
       vb.cpus = 3 # 2 processeurs
     end
-
-    dc01.vm.provision :ansible do |ansible|
-      ansible.limit = 'all'
-      ansible.playbook = 'ansible/playbook.yml'
-      ansible.verbose =  true
-      ansible.limit = "dc01"  # Exécute seulement dc01
-      ansible.host_vars = {
-      "dc01" => {"ansible_winrm_server_cert_validation" => "ignore"}
-    }
-    end 
   end
 
   config.vm.define "file_srv" do|file_srv|
@@ -50,16 +40,6 @@ Vagrant.configure("2") do |config|
       vb.memory = 3072 # 2 Go de RAM
       vb.cpus = 3 # 2 processeurs
     end
-
-    file_srv.vm.provision :ansible do |ansible|
-      ansible.limit = 'all'
-      ansible.playbook = 'ansible/playbook.yml'
-      ansible.verbose =  true
-      ansible.limit = "file_srv"  # Exécute seulement file_srv
-      ansible.host_vars = {
-      "file_srv" => {"ansible_winrm_server_cert_validation" => "ignore"}
-    }
-    end 
   end
   
   config.vm.define "debian" do|debian|
