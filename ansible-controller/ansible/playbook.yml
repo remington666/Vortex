@@ -1,5 +1,5 @@
 - name: Configuration des globales
-  hosts: domaine1_windows
+  hosts: domaine1_windows, domaine2_windows
   roles:
     - windows/network
 
