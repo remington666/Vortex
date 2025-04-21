@@ -4,7 +4,7 @@
   become: true
 
   vars:
-    glpi_version: "9.1"
+    glpi_version: "10.0.1"
     glpi_url: "https://github.com/glpi-project/glpi/releases/download/{{ glpi_version }}/glpi-{{ glpi_version }}.tar.gz"
     glpi_web_dir: "/var/www/html/glpi"
 
@@ -77,6 +77,27 @@
       loop:
         - apache2
         - mariadb
+
+    - name: Installer la dépendance Python pour MariaDB (PyMySQL)
+      apt:
+        name: python3-pymysql
+        state: present
+        update_cache: true
+
+    - name: Créer la base de données GLPI
+      mysql_db:
+        name: glpidb
+        state: present
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+
+    - name: Créer un utilisateur SQL pour GLPI
+      mysql_user:
+        name: glpi
+        password: glpipass
+        priv: 'glpidb.*:ALL'
+        host: localhost
+        state: present
+        login_unix_socket: /var/run/mysqld/mysqld.sock
 
     - name: Afficher l'URL de GLPI
       debug:
