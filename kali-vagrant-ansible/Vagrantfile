@@ -1,0 +1,57 @@
+﻿# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  # Box officielle Kali Linux
+  config.vm.box = "kalilinux/rolling"
+
+  # Nom d’hôte visible depuis la VM
+  config.vm.hostname = "kali"
+
+  # Dossier de provision Ansible partagé dans la VM
+  config.vm.synced_folder "./provision", "/vagrant/provision"
+
+  # Configuration VirtualBox
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "Kali-Ansible"
+    vb.memory = "4096"
+    vb.cpus = 2
+    vb.gui = true
+  end
+
+  # Provisioning Ansible exécuté depuis la machine hôte
+  # config.vm.provision "ansible" do |ansible|
+    # ansible.binary = "wsl ansible-playbook"
+    # ansible.playbook = "provision/playbook.yml"
+    # ansible.inventory_path = "inventory/vagrant.ini"
+    # ansible.limit = "all"
+
+    # Options utiles à activer au besoin :
+    # ansible.verbose = true          # Affiche plus d’info pendant le provision
+    # ansible.install = true          # Force l’install d’Ansible sur l’hôte
+    # ansible.become = true           # Forcer le become: yes globalement
+    # ansible.extra_vars = { foo: "bar" }  # Variables dynamiques
+    # ansible.galaxy_role_file = "requirements.yml"
+    # ansible.galaxy_roles_path = "roles"
+  # end
+
+  # Provisioning Ansible exécuté *depuis la VM elle-même*
+  config.vm.provision "ansible_local" do |ansible|
+    ansible.playbook = "/vagrant/provision/playbook.yml"
+    ansible.become = true  # Nécessaire pour les tâches root (apt, etc.)
+    ansible.verbose = true
+    ansible.install = true
+    ansible.limit = "all"
+    ansible.galaxy_role_file = "requirements.yml"
+    ansible.galaxy_roles_path = "roles"
+    # ansible.become = true
+  end
+
+  # Réseau privé (non essentiel par défaut)
+  # config.vm.network "private_network", type: "dhcp"
+  # config.vm.network "private_network", ip: "192.168.33.33"
+
+  # ssh.username/password en clair
+  # config.ssh.username = "kali"
+  # config.ssh.password = "kali"
+end

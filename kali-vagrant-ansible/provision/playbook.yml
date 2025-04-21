@@ -1,0 +1,105 @@
+﻿---
+- name: Provision Kali Linux
+  hosts: all
+  # become_user: kali
+  remote_user: vagrant
+  become: true
+
+  vars:
+    i3_use_gaps: false
+    i3_terminal: xfce4-terminal
+    i3_use_polybar: false
+    i3_optional: false
+
+  tasks:
+    # - name: Update and upgrade packages
+    #   apt:
+    #     update_cache: yes
+    #     upgrade: dist
+
+    # - name: Install common tools
+    #   apt:
+    #     name:
+    #       - vim
+    #       - git
+    #       - curl
+    #       - net-tools
+    #     state: present
+
+    - name: Create a test file
+      file:
+        path: /root/ansible_test.txt
+        state: touch
+
+    - name: Install missing packages
+      become: yes
+      become_user: root
+      apt:
+        pkg:
+          - i3-wm
+          - i3lock
+          - i3status
+          - zsh
+          - neovim
+          - apt-file
+          - htop
+          - rofi
+          - nodejs
+          - nitrogen
+        state: latest
+        update_cache: yes
+
+#  roles:
+#    - role: ansible-xresources
+#      become: yes
+#      become_user: kali
+#
+#    - role: ansible-i3
+#      become: yes
+#      become_user: kali
+#
+#    - role: ansible-vim
+#      become: yes
+#      become_user: kali
+#
+#    - role: ansible-xfce4-terminal
+#      become: yes
+#      become_user: kali
+#
+#    - role: ansible-tmux
+#      become: yes
+#      become_user: kali
+#
+#    - role: ansible-zsh
+#      become: yes
+#      become_user: kali
+#
+#    - role: ansible-rofi
+#      become: yes
+#      become_user: kali
+
+  roles:
+    # - role: ansible-xresources
+    #   become: true
+    #   become_user: kali
+
+    # - role: ansible-zsh
+    #   become: true
+    #   become_user: kali
+
+    - role: ansible-vim
+      become: true
+      become_user: kali
+
+    - role: ansible-i3
+      become: true  # root, via apt
+
+    - role: ansible-rofi
+      become: true
+
+    - role: ansible-xfce4-terminal
+      become: true
+
+    - role: ansible-tmux
+      become: true
+

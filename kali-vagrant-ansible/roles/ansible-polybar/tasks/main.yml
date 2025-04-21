@@ -1,0 +1,37 @@
+---
+# tasks file for ansible-polybar
+- name: Make sure config directory exists
+  file:
+    path: "{{ansible_env.HOME}}/.config/polybar"
+    state: directory
+
+- name: Check is checkupdates command exists
+  shell: command -v checkupdates >/dev/null 2>&1
+  register: checkupdates_present
+  ignore_errors: yes
+
+- name: Copy main polybar config
+  template:
+    src: config.j2
+    dest: "{{ansible_env.HOME}}/.config/polybar/config"
+
+- name: Copy external scripts
+  copy:
+    src: "{{item}}"
+    dest: "{{ansible_env.HOME}}/.config/polybar/{{item}}"
+    mode: "0755"
+  with_items:
+    - weather
+    - mpris.sh
+    - pkg.sh
+
+- name: Make launch script directory exists
+  file:
+    path: "{{ansible_env.HOME}}/.local/bin"
+    state: directory
+
+- name: Copy launch script
+  copy:
+    src: launch_polybar
+    dest: "{{ansible_env.HOME}}/.local/bin/launch_polybar"
+    mode: "0744"

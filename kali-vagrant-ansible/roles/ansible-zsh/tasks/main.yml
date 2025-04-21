@@ -1,0 +1,32 @@
+---
+# tasks file for ansible-zsh
+- name: Make sure .config/zsh directory exists
+  file:
+    path: "{{ansible_env.HOME}}/.config/zsh"
+    state: directory
+
+- name: "Template zshenv to {{ansible_env.HOME}}/.zshenv"
+  template:
+    src: "zshenv.j2"
+    dest: "{{ansible_env.HOME}}/.zshenv"
+
+- name: Copy zsh configuration files
+  copy:
+    src: "{{item}}"
+    dest: "{{ansible_env.HOME}}/.config/zsh/{{item}}"
+  with_items:
+    - zsh_plugins
+    - .zshrc
+    - functions.zsh
+    - aliases.zsh
+    - dircolors
+  register: zshconfig
+
+- name: Run antibody local install script
+  script: install_antibody.sh -b "{{ansible_env.HOME}}/.local/bin"
+  args:
+    creates: "{{ansible_env.HOME}}/.local/bin/antibody"
+
+- name: Install zsh plugins
+  script: "{{ansible_env.HOME}}/.local/bin/antibody bundle < {{ansible_env.HOME}}/.config/zsh/zsh_plugins > {{ansible_env.HOME}}/.zsh_plugins.sh"
+  when: zshconfig.changed

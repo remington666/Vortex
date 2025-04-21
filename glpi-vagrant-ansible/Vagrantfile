@@ -1,0 +1,33 @@
+﻿# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "debian/bullseye64"
+  config.vm.hostname = "glpi"
+  config.vm.network "private_network", ip: "192.168.56.10"
+
+  config.vm.synced_folder "./provision", "/vagrant/provision"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "Debian-GLPI"
+    vb.memory = "2048"
+    vb.cpus = 2
+    vb.gui = true
+  end
+
+  # Installer Ansible proprement avec apt pour éviter version instable
+  config.vm.provision "shell", inline: <<-SHELL
+    apt update
+    apt install -y ansible
+  SHELL
+
+  # Provisioning Ansible local avec compatibilité forcée
+  config.vm.provision "ansible_local" do |ansible|
+    ansible.playbook = "/vagrant/provision/playbook.yml"
+    ansible.become = true
+    ansible.install = false     # On a déjà installé manuellement via shell
+    ansible.verbose = true
+    ansible.compatibility_mode = "2.0"  # Évite les erreurs avec --sudo
+    ansible.limit = "all"
+  end
+end

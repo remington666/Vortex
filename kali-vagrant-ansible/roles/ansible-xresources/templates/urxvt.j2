@@ -1,0 +1,65 @@
+! vi: ft=xdefaults
+
+
+! General settings
+URxvt.saveLines:              10000
+URxvt.scrollstyle:            rxvt
+URxvt.termName:               xterm-256color
+!URxvt*termName:              rxvt-unicode-256color
+!URxvt*loginShell:            true
+URxvt.urgentOnBell:           True
+URxvt.cursorBlink:            True
+! Disable that stupid ISO mode
+URxvt.iso14755:               false
+URxvt.iso14755_52:            false
+
+
+!Scrolling
+URxvt*scrollWithBuffer:       true
+URxvt*scrollTtyKeypress:      true
+URxvt*scrollTtyOutput:        false
+URxvt*secondaryScreen:        1
+URxvt*secondaryScroll:        0
+
+!! regular
+URxvt*.font: \
+        -*-terminus-medium-*-*-*-14-*-*-*-*-*-*-*, \
+        xft:{{main_font}}:size=8, \
+        xft:Unifont:size=8
+!! bold
+URxvt*.boldfont: \
+        -*-terminus-bold-*-*-*-14-*-*-*-*-*-*-*, \
+        xft:{{main_font}}:size=8:style=bold, \
+        xft:Unifont:size=8:style=bold
+!! italic
+URxvt*.italicfont: \
+        -*-terminus-medium-*-*-*-14-*-*-*-*-*-*-*, \
+        xft:{{main_font}}:size=8:style=italic, \
+        xft:Unifont:size=8:style=italic
+
+!URxvt.letterSpace:            -1
+!URxvt*lineSpace:             1
+
+
+! URxvt.font:
+! URxvt.bold.font: -*-terminus-bold-*-*-*-14-*-*-*-*-*-*-*
+
+URxvt.internalBorder:         10
+URxvt.scrollBar:              False
+
+
+! Clipboard
+URxvt.keysym.Shift-Control-C: perl:clipboard:copy
+URxvt.keysym.Shift-Control-V: perl:clipboard:paste
+URxvt.clipboard.autocopy:     true
+URxvt.copyCommand:            xclip -i -selection clipboard
+URxvt.pasteCommand:           xclip -o -selection clipboard
+
+
+! Extensions
+URxvt.perl-ext-common:        default,matcher,clipboard,keyboard-select,resize-font
+URxvt.matcher.button:         1
+URxvt.urlLauncher:            xdg-open
+URxvt.urlButton:              1
+URxvt.underlineURLs:          True
+

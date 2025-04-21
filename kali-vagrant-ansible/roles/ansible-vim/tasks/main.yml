@@ -1,0 +1,32 @@
+---
+# tasks file for ansible-vim
+- name: Deploy vim dotfiles repo
+  git:
+    repo: https://github.com/pinpox/dotfiles-vim.git
+    dest: "{{ansible_env.HOME}}/.vim"
+
+- name: Create symbolic link for neovim
+  file:
+    src: "{{ansible_env.HOME}}/.vim"
+    dest: "{{ansible_env.HOME}}/.config/nvim"
+    state: link
+
+- name: Make sure .local/share/applications exists
+  file:
+    path: "{{ansible_env.HOME}}/.local/share/applications"
+    state: directory
+
+- name: Copy nvim.desktop
+  copy:
+    src: nvim.desktop
+    dest: "{{ansible_env.HOME}}/.local/share/applications/nvim.desktop"
+
+- name: "Make sure {{ansible_env.HOME}}/.vim/colors exists"
+  file:
+    path: "{{ansible_env.HOME}}/.vim/colors"
+    state: directory
+
+- name: "Template theme to .vim/colors/ansible-theme.vim"
+  template:
+    src: "theme.j2"
+    dest: "{{ansible_env.HOME}}/.vim/colors/ansible-theme.vim"

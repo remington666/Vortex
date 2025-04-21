@@ -1,0 +1,19 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	/3fdf28bc/
+Author Information	README.md	/^Author Information$/;"	s
+Copy colors	tasks/main.yml	/^- name: Copy colors$/;"	p
+Copy main tmux config	tasks/main.yml	/^- name: Copy main tmux config$/;"	p
+Dependencies	README.md	/^Dependencies$/;"	s
+Example Playbook	README.md	/^Example Playbook$/;"	s
+License	README.md	/^License$/;"	s
+Requirements	README.md	/^Requirements$/;"	s
+Role Name	README.md	/^Role Name$/;"	c
+Role Variables	README.md	/^Role Variables$/;"	s
+is_vim	files/tmux.conf	/^is_vim="ps -o state= -o comm= -t '#{pane_tty}' \\$/;"	k
+join pane from	files/tmux.conf	/^bind-key J command-prompt -p "join pane from:"  "join-pane -s '%%'"$/;"	k
+send pane to	files/tmux.conf	/^bind-key S command-prompt -p "send pane to:"  "join-pane -t '%%'"$/;"	k

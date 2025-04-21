@@ -1,0 +1,60 @@
+---
+# tasks file for ansible-i3
+- name: Make sure .config/i3 exists
+  file:
+    path: "{{ansible_env.HOME}}/.config/i3"
+    state: directory
+
+- name: Copy i3 configuration
+  template:
+    src: config.j2
+    dest: "{{ansible_env.HOME}}/.config/i3/config"
+
+- name: Create Pictures directory
+  file:
+    path: "{{ansible_env.HOME}}/Pictures"
+    state: directory
+
+- name: Copy lock image
+  copy:
+    src: lock.png
+    dest: "{{ansible_env.HOME}}/Pictures/lock.png"
+
+- name: Copy gtk2 settings
+  template:
+    src: "gtk2/{{item}}.j2"
+    dest: "{{ansible_env.HOME}}/.{{item}}"
+  with_items:
+    - "gtkrc-2.0"
+    - "gtk-bookmarks"
+
+- name: Copy xinitrc
+  copy:
+    src: xinitrc
+    dest: "{{ansible_env.HOME}}/.xinitrc"
+
+- name: "Make sure .config/gtk-3.0 exists"
+  file:
+    path: "{{ansible_env.HOME}}/.config/gtk-3.0"
+    state: directory
+
+- name: Copy gtk3 settings
+  template:
+    src: "gtk3/{{item}}.j2"
+    dest: "{{ansible_env.HOME}}/.config/gtk-3.0/{{item}}"
+  with_items:
+    - "bookmarks"
+    - "gtk.css"
+    - "settings.ini"
+
+- name: Make sure .config/i3status existrs
+  file:
+    path: "{{ansible_env.HOME}}/.config/i3status"
+    state: directory
+  when: i3_use_polybar == False
+
+- name: Copy i3status configuration
+  template:
+    src: i3status.j2
+    dest: "{{ansible_env.HOME}}/.config/i3status/config"
+  when: i3_use_polybar == False

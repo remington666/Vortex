@@ -1,0 +1,83 @@
+﻿---
+- name: Installer GLPI 9.1
+  hosts: all
+  become: true
+
+  vars:
+    glpi_version: "9.1"
+    glpi_url: "https://github.com/glpi-project/glpi/releases/download/{{ glpi_version }}/glpi-{{ glpi_version }}.tar.gz"
+    glpi_web_dir: "/var/www/html/glpi"
+
+  tasks:
+    - name: Mettre à jour les paquets
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Installer Apache, MariaDB, PHP et les extensions nécessaires
+      apt:
+        name:
+          - apache2
+          - mariadb-server
+          - php
+          - php-mysql
+          - php-curl
+          - php-gd
+          - php-mbstring
+          - php-xml
+          - php-ldap
+          - php-apcu
+          - php-zip
+          - php-bz2
+          - unzip
+        state: present
+
+    - name: Télécharger GLPI
+      get_url:
+        url: "{{ glpi_url }}"
+        dest: "/tmp/glpi.tar.gz"
+
+    # - name: Décompresser GLPI dans /var/www/html/
+    #   unarchive:
+    #     src: "/tmp/glpi.tar.gz"
+    #     dest: "/var/www/html/"
+    #     remote_src: yes
+    #     creates: "{{ glpi_web_dir }}/index.php"
+    #     extra_opts: [--strip-components=1]  # enlève le dossier glpi/ encapsulant tout
+
+    - name: Créer le répertoire cible de GLPI
+      file:
+        path: "{{ glpi_web_dir }}"
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: '0755'
+
+    - name: Décompresser GLPI dans /var/www/html/glpi/
+      unarchive:
+        src: "/tmp/glpi.tar.gz"
+        dest: "{{ glpi_web_dir }}"
+        remote_src: yes
+        creates: "{{ glpi_web_dir }}/index.php"
+        extra_opts: [--strip-components=1]
+
+    - name: Assurer les permissions correctes
+      file:
+        path: "{{ glpi_web_dir }}"
+        state: directory
+        recurse: yes
+        owner: www-data
+        group: www-data
+
+    - name: Activer Apache et MariaDB
+      service:
+        name: "{{ item }}"
+        state: started
+        enabled: true
+      loop:
+        - apache2
+        - mariadb
+
+    - name: Afficher l'URL de GLPI
+      debug:
+        msg: "🌐 GLPI installé : http://192.168.56.10/glpi"
