@@ -19,16 +19,6 @@ Vagrant.configure("2") do |config|
       vb.memory = 3072 # 2 Go de RAM
       vb.cpus = 3 # 2 processeurs
     end
-
-    dc02.vm.provision :ansible do |ansible|
-      ansible.limit = 'all'
-      ansible.playbook = 'ansible/playbook.yml'
-      ansible.verbose =  true
-      ansible.limit = "dc02"  # Exécute seulement dc02
-      ansible.host_vars = {
-      "dc02" => {"ansible_winrm_server_cert_validation" => "ignore"}
-    }
-    end 
   end
 
   config.vm.define "iis" do|iis|
@@ -46,46 +36,7 @@ Vagrant.configure("2") do |config|
       vb.memory = 3072 # 2 Go de RAM
       vb.cpus = 3 # 2 processeurs
     end
-
-
-    iis.vm.provision :ansible do |ansible|
-      ansible.limit = 'all'
-      ansible.playbook = 'ansible/playbook.yml'
-      ansible.verbose =  true
-      ansible.limit = "iis"  # Exécute seulement iis
-      ansible.host_vars = {
-      "iis" => {"ansible_winrm_server_cert_validation" => "ignore"}
-    }
-    end 
   end
   
-  config.vm.define "windows" do|windows|
-    windows.vm.box = "mrlesmithjr/windows10"
-    windows.vm.box_version = "1574780096"
-    windows.vm.hostname = "windows"
-
-    windows.vm.network "private_network", ip: "10.10.2.4", virtualbox__intnet: "vboxnet2"
-    windows.vm.boot_timeout = 400
-    windows.vm.guest = :windows
-    windows.winrm.transport = :ssl
-    windows.winrm.basic_auth_only = true
-    windows.winrm.ssl_peer_verification = false # ajout suite a l'erruer ssl_peer_verification 
-
-    windows.vm.provider "virtualbox" do |vb|
-      vb.name = "windows10"
-      vb.memory = 3072 # 2 Go de RAM
-      vb.cpus = 1 # 2 processeurs
-    end
-
-    windows.vm.provision :ansible do |ansible|
-        ansible.limit = 'all'
-        ansible.playbook = 'ansible/playbook.yml'
-        ansible.verbose =  true
-        ansible.limit = "windows"  # Exécute seulement windows
-        ansible.host_vars = {
-        "windows" => {"ansible_winrm_server_cert_validation" => "ignore"}
-      }
-    end 
-  end 
 end
 
