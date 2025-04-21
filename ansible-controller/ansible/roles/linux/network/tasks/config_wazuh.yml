@@ -1,20 +1,9 @@
-- name: Supprimer toutes les lignes contenant "motclé" dans fichier.txt
-  lineinfile:
-    path: /etc/network/interfaces
-    regexp: 'eth0'
-    state: absent
-
-
-- name: Redémarrer le service networking avec systemd
-  systemd:
-    name: networking
-    state: restarted
-  ignore_errors: yes   # Ignore les erreurs si la commande échoue (utile selon la distro)
+- name: Supprimer l'adresse IP 10.0.2.15/24 de eth0
+  command: ip addr del 10.0.2.15/24 dev eth0
+  become: true
 
 - name: Vérifier le statut du service networking
   systemd:
     name: networking
     state: started
-
-- name: Supprimer l'adresse IP 10.0.2.15/24 de eth0
-  command: ip addr del 10.0.2.15/24 dev eth0
+  become: true
