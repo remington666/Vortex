@@ -1,34 +1,20 @@
-- name: Supprimer une ligne spécifique d'un fichier
-  hosts: wazuh_server
-  become: true
-
-  tasks:
-    - name: Supprimer toutes les lignes contenant "motclé" dans fichier.txt
-      lineinfile:
-        path: /etc/network/interfaces
-        regexp: 'eth0'
-        state: absent
+- name: Supprimer toutes les lignes contenant "motclé" dans fichier.txt
+  lineinfile:
+    path: /etc/network/interfaces
+    regexp: 'eth0'
+    state: absent
 
 
-- name: Redémarrer le service networking
-  hosts: wazuh_server
-  become: true
+- name: Redémarrer le service networking avec systemd
+  systemd:
+    name: networking
+    state: restarted
+  ignore_errors: yes   # Ignore les erreurs si la commande échoue (utile selon la distro)
 
-  tasks:
-    - name: Redémarrer le service networking avec systemd
-      systemd:
-        name: networking
-        state: restarted
-      ignore_errors: yes   # Ignore les erreurs si la commande échoue (utile selon la distro)
+- name: Vérifier le statut du service networking
+  systemd:
+    name: networking
+    state: started
 
-    - name: Vérifier le statut du service networking
-      systemd:
-        name: networking
-        state: started
-
-- name: Supprimer une adresse IP de l'interface réseau
-  hosts: wazuh_server
-  become: true   # Nécessite des privilèges sudo
-  tasks:
-    - name: Supprimer l'adresse IP 10.0.2.15/24 de eth0
-      command: ip addr del 10.0.2.15/24 dev eth0
+- name: Supprimer l'adresse IP 10.0.2.15/24 de eth0
+  command: ip addr del 10.0.2.15/24 dev eth0
