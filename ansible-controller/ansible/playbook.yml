@@ -1,3 +1,13 @@
+- name: Configuration des globales
+  hosts: domaine1_windows
+  roles:
+    - windows/network
+
+- name: Configuration wazuh serveur
+  hosts: wazuh
+  roles:
+    - linux/network
+
 - name: Configureation du controller de domaine DC01
   hosts: dc01
   roles:
@@ -23,14 +33,3 @@
   hosts: iis
   roles:
     - ad/domaine2/iis
-
-
-- name: Configuration des globales
-  hosts: domaine1_windows
-  roles:
-    - windows/network
-
-- name: Configuration wazuh serveur
-  hosts: wazuh
-  roles:
-    - linux/network
