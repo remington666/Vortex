@@ -4,8 +4,8 @@
   become: true
 
   vars:
-    glpi_version: "10.0.1"
-    glpi_url: "https://github.com/glpi-project/glpi/releases/download/{{ glpi_version }}/glpi-{{ glpi_version }}.tar.gz"
+    # glpi_version: "9.5.8" 
+    glpi_url: "https://github.com/glpi-project/glpi/releases/download/9.5.8/glpi-9.5.8.tgz"
     glpi_web_dir: "/var/www/html/glpi"
 
   tasks:
@@ -29,6 +29,7 @@
           - php-apcu
           - php-zip
           - php-bz2
+          - php-intl
           - unzip
         state: present
 
