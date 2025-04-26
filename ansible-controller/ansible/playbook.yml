@@ -3,10 +3,15 @@
   roles:
     - windows/network
 
-- name: Configuration wazuh serveur
+- name: Configuration carte réseaux wazuh serveur
   hosts: wazuh
   roles:
     - linux/network
+
+- name: Configuration wazuh serveur
+  hosts: wazuh
+  roles:
+    - linux/wazuh
 
 - name: Configureation du controller de domaine DC01
   hosts: dc01
