@@ -1,57 +1,23 @@
 Vagrant.configure("2") do |config|
-
   config.vm.define "wazuhserver" do |wazuhserver|
     wazuhserver.vm.box = "generic/debian12"
     wazuhserver.vm.hostname = "wazuhserver"
-    wazuhserver.vm.network "forwarded_port", guest: 80, host: 8080
-    nouveausoc.vm.network "forwarded_port", guest: 443, host: 4441
-    wazuhserver.vm.network "private_network", type: "static", ip: "192.168.1.2", virtualbox__intnet: "vboxnet5"
+    wazuhserver.vm.network "private_network", type: "static", ip: "192.168.1.2", virtualbox__intnet:"vboxnet5"
     wazuhserver.vm.provider "virtualbox" do |vb|
       vb.memory = "4096"
       vb.cpus = 3
     end
-    wazuhserver.vm.synced_folder ".", "/vagrant"
 
-    wazuhserver.vm.provision "shell", name: "installationwazuh", inline: <<-SHELL
-      sudo apt-get update
-      sudo apt-get install curl
-      sudo curl -sO https://packages.wazuh.com/4.10/wazuh-install.sh && sudo bash ./wazuh-install.sh -a
-      sudo tar -xvf wazuh-install-files.tar
-      cd wazuh-install-files/
-      sudo cat wazuh-passwords.txt
-    SHELL
-    
-    wazuhserver.vm.provision "shell", name: "creation_user_ansible", inline: <<-SHELL
-      sudo useradd -m -s /bin/bash ansible && echo "ansible:ansible" | sudo chpasswd
-      sudo usermod -aG sudo ansible
-    SHELL
-
+    wazuhserver.vm.provision "shell", name: "add gateway /etc/network/interfaces", inline: <<-SHELL
+    echo "
+      source /etc/network/interfaces.d/*
+      auto eth1
+      iface eth1 inet static
+        address 192.168.1.2
+        netmask 255.255.255.0
+        gateway 192.168.1.1
+      " | sudo tee /etc/network/interfaces
+        sudo reboot
+      SHELL
   end
-
-
-  # # Pour la partie installation d'un agent Wazuh sur un poste Linux
-  # config.vm.define "linuxagent" do |linuxagent|
-  #   linuxagent.vm.box = "ubuntu/focal64"
-  #   linuxagent.vm.network "private_network", type: "static", ip: "192.168.1.3"
-  #   linuxagent.vm.provider "virtualbox" do |vb|
-  #     vb.memory = "1024"
-  #     vb.cpus = 1
-  #   end
-  #   linuxagent.vm.provision "file", source: "/vagrant/conf/confagentlinux-ossec.conf", destination: "/home/vagrant/ossec.conf"
-  #   linuxagent.vm.provision "shell", name: "part15", inline: <<-SHELL
-  #     sudo hostnamectl set-hostname linuxagent
-  #     sudo systemctl restart systemd-logind.service
-  #     sudo apt-get install -y gnupg apt-transport-https curl
-  #     sudo curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | sudo gpg --no-default-keyring --keyring gnupg-ring:/usr/share/keyrings/wazuh.gpg --import && sudo chmod 644 /usr/share/keyrings/wazuh.gpg
-  #     sudo echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" | sudo tee -a /etc/apt/sources.list.d/wazuh.list
-  #     sudo apt-get update
-  #     WAZUH_MANAGER="192.168.1.3"
-  #     sudo apt-get install wazuh-agent
-  #     sudo rm -f /var/ossec/etc/ossec.conf
-  #     sudo mv /home/vagrant/ossec.conf /var/ossec/etc/ossec.conf
-  #     sudo systemctl enable wazuh-agent
-  #     sudo reboot
-  #     sudo systemctl start wazuh-agent
-  #   SHELL
-  # end
 end

@@ -29,51 +29,9 @@ Vagrant.configure("2") do |config|
       
       controller.vm.provision "shell", name: "run config VMs", inline: <<-SHELL
           cd /tmp/ansible/
+          export ANSIBLE_HOST_KEY_CHECKING=False
           ansible-playbook -i hosts.yml playbook.yml
       SHELL
 
   end
 end
-
-
-    # controller.vm.provision "shell", name: "testdeux", inline: <<-SHELL
-    #   sudo apt-get install sshpass
-    # SHELL
-
-    # controller.vm.provision "shell", name: "testdeux", inline: <<-SHELL
-    #   sudo mkdir ansible
-    #   sudo mv /home/vagrant/ansible.cfg /home/vagrant/ansible/ansible.cfg
-    #   sudo mv /home/vagrant/inventory.ini /home/vagrant/ansible/inventory.ini
-    #   sudo mv /home/vagrant/desactivation_carte_reseaux.yml /home/vagrant/ansible/desactivation_carte_reseaux.yml
-    #   cd ansible
-    #   ansible-playbook -i inventory.ini desactivation_carte_reseaux.yml
-    # SHELL
-
-    # # Machine 2 : Debian Test
-  #   controller.vm.provision "shell", name: "agentlinux", inline: <<-SHELL
-  #     sudo wget https://packages.wazuh.com/4.x/apt/pool/main/w/wazuh-agent/wazuh-agent_4.11.0-1_amd64.deb && sudo WAZUH_MANAGER='192.168.1.2' WAZUH_AGENT_NAME='ansible-controller' dpkg -i ./wazuh-agent_4.11.0-1_amd64.deb
-  #     sudo systemctl daemon-reload
-  #     sudo systemctl enable wazuh-agent
-  #     sudo systemctl start wazuh-agent
-  #   SHELL
-  # end
-
-
-  # config.vm.define "debian-test" do |testvm|
-  #   testvm.vm.hostname = "debian-test"
-  #   testvm.vm.box = "generic/debian12"
-  #   testvm.vm.network "private_network", ip: "192.168.1.4"
-
-  #   testvm.vm.provision "shell", name: "install_ssh", inline: <<-SHELL
-  #     sudo apt-get update
-  #     sudo apt-get install -y openssh-server
-  #     sudo systemctl enable ssh
-  #     sudo systemctl start ssh
-  #     sudo useradd -m -s /bin/bash ansible
-  #     echo 'ansible:ansible' | sudo chpasswd
-  #     sudo sed -i 's/^#\?PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
-  #     sudo systemctl restart ssh
-  #     sudo usermod -aG sudo ansible
-  #   SHELL
-  #end      
-
