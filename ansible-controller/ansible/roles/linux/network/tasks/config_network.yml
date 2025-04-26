@@ -1,5 +1,5 @@
-- name: Supprimer l'adresse IP 10.0.2.15/24 de eth0
-  command: ip addr del 10.0.2.15/24 dev eth0
+- name: Eteint l'interface de vagrant
+  command: ifdown eth0
   become: true
 
 - name: Vérifier le statut du service networking

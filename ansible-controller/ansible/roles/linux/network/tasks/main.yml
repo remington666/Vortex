@@ -1,2 +1,2 @@
 - name: Configuration réseaux du serveur wazuk
-  import_tasks: config_wazuh.yml 
+  import_tasks: config_network.yml 
