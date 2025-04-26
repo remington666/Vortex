@@ -1,0 +1,11 @@
+- name: Get package wazuh
+  ansible.builtin.shell: curl -sO https://packages.wazuh.com/4.10/wazuh-install.sh
+  become: true
+
+- name: install wazuh
+  ansible.builtin.shell: /bin/bash ./wazuh-install.sh -a
+  become: true
+
+- name: get password admin
+  ansible.builtin.shell: sudo tar -xvf wazuh-install-files.tar && cd wazuh-install-files/ && sudo cat wazuh-passwords.txt
+  become: true
