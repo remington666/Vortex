@@ -3,7 +3,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "wazuhserver" do |wazuhserver|
     wazuhserver.vm.box = "generic/debian12"
     wazuhserver.vm.hostname = "wazuhserver"
-    wazuhserver.vm.network "private_network", type: "static", ip: "192.168.1.2"
+    wazuhserver.vm.network "private_network", type: "static", ip: "192.168.1.2", virtualbox__intnet:"vboxnet5"
     wazuhserver.vm.provider "virtualbox" do |vb|
       vb.memory = "4096"
       vb.cpus = 3
