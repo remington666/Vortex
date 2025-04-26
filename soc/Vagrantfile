@@ -1,5 +1,4 @@
 Vagrant.configure("2") do |config|
-
   config.vm.define "wazuhserver" do |wazuhserver|
     wazuhserver.vm.box = "generic/debian12"
     wazuhserver.vm.hostname = "wazuhserver"
@@ -8,16 +7,4 @@ Vagrant.configure("2") do |config|
       vb.memory = "4096"
       vb.cpus = 3
     end
-    wazuhserver.vm.synced_folder ".", "/vagrant"
-
-    wazuhserver.vm.provision "shell", name: "installationwazuh", inline: <<-SHELL
-      sudo apt-get update
-      sudo apt-get install curl
-      sudo curl -sO https://packages.wazuh.com/4.10/wazuh-install.sh && sudo bash ./wazuh-install.sh -a
-      sudo tar -xvf wazuh-install-files.tar
-      cd wazuh-install-files/
-      sudo cat wazuh-passwords.txt
-    SHELL
-    
-  end
 end
