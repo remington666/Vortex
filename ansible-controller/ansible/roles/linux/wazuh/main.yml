@@ -1,2 +1,0 @@
-- name: Configuration wazuh
-  import_tasks: install.yml 
