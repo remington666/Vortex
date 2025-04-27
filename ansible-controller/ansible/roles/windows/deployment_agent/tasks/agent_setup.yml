@@ -1,0 +1,16 @@
+- name: recuperer le hostname
+  ansible.builtin.shell: 
+          $ComputerName = $env:COMPUTERNAME
+          $RandomNumber = Get-Random -Minimum 1000 -Maximum 9999
+          $WazuhAgentName = "$ComputerName-$RandomNumber"
+  register: hostname_
+
+- name: Get agent wazuh
+  ansible.builtin.shell: 
+      Invoke-WebRequest -Uri "https://packages.wazuh.com/4.x/windows/wazuh-agent-4.8.0-1.msi" -OutFile "$env:TEMP\wazuh-agent.msi"
+      msiexec.exe /i "$env:TEMP\wazuh-agent.msi" /q WAZUH_MANAGER='192.168.1.2' WAZUH_AGENT_GROUP='default' WAZUH_AGENT_NAME="{{ hostname_.stdout}}"
+  become: true
+
+- name: start service  wazuh and enable
+  ansible.builtin.shell: NET START Wazuh
+  become: true
