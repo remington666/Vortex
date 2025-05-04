@@ -25,6 +25,18 @@
   roles:
     - linux/wazuh
 
+- name: Installation des agent wazuh sur les windows
+  hosts: domaine1_windows, domaine2_windows
+  roles:
+    - windows/deployment_agent
+
+
+- name: Installation des agent wazuh sur les linux 
+  hosts: domaine1_linux, domaine2_linux
+  roles:
+    - linux/deployment_agent
+
+
 - name: Configureation du controller de domaine DC01
   hosts: dc01
   roles:
