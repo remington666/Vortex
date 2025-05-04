@@ -1,0 +1,11 @@
+- name: recuperer le hostname
+  ansible.builtin.shell: hostname
+  register: hostname_
+
+- name: Configuration de l'agent wazuh
+  ansible.builtin.shell: sudo WAZUH_MANAGER='192.168.1.2' WAZUH_AGENT_NAME='{{ hostname_.stdout }}' dpkg -i /home/vagrant/wazuh-agent_4.10.1-1_amd64.deb
+  become: true
+
+- name: start service  wazuh and enable
+  ansible.builtin.shell: sudo systemctl daemon-reload && sudo systemctl enable wazuh-agent && sudo systemctl start wazuh-agent
+  become: true

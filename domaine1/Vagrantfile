@@ -21,6 +21,9 @@ Vagrant.configure("2") do |config|
       vb.memory = 3072 # 2 Go de RAM
       vb.cpus = 3 # 2 processeurs
     end
+
+    dc01.vm.provision "shell", inline: 'Invoke-WebRequest -Uri "https://packages.wazuh.com/4.x/windows/wazuh-agent-4.8.0-1.msi" -OutFile "$env:TEMP\wazuh-agent.msi"'
+
   end
 
   config.vm.define "file_srv" do|file_srv|
@@ -40,6 +43,10 @@ Vagrant.configure("2") do |config|
       vb.memory = 3072 # 2 Go de RAM
       vb.cpus = 3 # 2 processeurs
     end
+    
+    file_srv.vm.provision "shell", inline: 'Invoke-WebRequest -Uri "https://packages.wazuh.com/4.x/windows/wazuh-agent-4.8.0-1.msi" -OutFile "$env:TEMP\wazuh-agent.msi"'
+    
+
   end
   
   config.vm.define "debian" do|debian|
@@ -52,6 +59,8 @@ Vagrant.configure("2") do |config|
       vb.memory = 2048 # 2 Go de RAM
       vb.cpus = 1 # 2 processeurs
       end
+
+    debian.vm.provision "shell", inline: "wget https://packages.wazuh.com/4.x/apt/pool/main/w/wazuh-agent/wazuh-agent_4.10.1-1_amd64.deb -O /home/vagrant/wazuh-agent_4.10.1-1_amd64.deb"
 
     debian.vm.provision "shell", inline: <<-SHELL
       echo "vagrant"|sudo -S apt update -y 

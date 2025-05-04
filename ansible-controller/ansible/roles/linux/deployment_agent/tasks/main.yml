@@ -1,0 +1,2 @@
+- name: Configuration des agents
+  import_tasks: agent_setup.yml 
