@@ -35,6 +35,17 @@ Vagrant.configure("2") do |config|
     # ansible.galaxy_role_file = "requirements.yml"
     # ansible.galaxy_roles_path = "roles"
   # end
+  config.vm.provision "shell", name: "add gateway /etc/network/interfaces", inline: <<-SHELL
+  echo "
+    source /etc/network/interfaces.d/*
+    auto eth1
+    iface eth1 inet static
+      address 192.168.2.2
+      netmask 255.255.255.0
+      gateway 192.168.2.1
+    " | sudo tee /etc/network/interfaces
+      sudo reboot
+    SHELL
 
   # Provisioning Ansible exécuté *depuis la VM elle-même*
   config.vm.provision "ansible_local" do |ansible|
@@ -47,17 +58,6 @@ Vagrant.configure("2") do |config|
     ansible.galaxy_roles_path = "roles"
     # ansible.become = true
   end
-  config.vm.provision "shell", name: "add gateway /etc/network/interfaces", inline: <<-SHELL
-  echo "
-    source /etc/network/interfaces.d/*
-    auto eth1
-    iface eth1 inet static
-      address 192.168.2.2
-      netmask 255.255.255.0
-      gateway 192.168.2.1
-    " | sudo tee /etc/network/interfaces
-      sudo reboot
-    SHELL
   # Réseau privé (non essentiel par défaut)
   # config.vm.network "private_network", type: "dhcp"
   # config.vm.network "private_network", ip: "192.168.33.33"
