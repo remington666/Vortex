@@ -4,6 +4,7 @@
     dns_servers: 
       - 10.10.1.2
       - 10.10.2.2
+      - 8.8.8.8
 
 
 - name: Add a network static route
