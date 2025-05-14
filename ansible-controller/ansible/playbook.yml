@@ -1,19 +1,12 @@
-- name: Installation wazuh sur les windows
-  hosts: domaine1_windows, domaine2_windows
-  roles:
-    - windows/deployment_agent
-
-
-- name: Installation wazuh sur les linux 
-  hosts: domaine1_linux, domaine2_linux
-  roles:
-    - linux/deployment_agent
-
-
 - name: Configuration des globales
   hosts: domaine1_windows, domaine2_windows
   roles:
     - windows/network
+
+- name: Configuration des serveurs sur le domaine2
+  hosts: domaine2_windows
+  roles:
+    - ad/domaine2/windows
 
 - name: Configuration carte réseaux wazuh serveur
   hosts: wazuh
@@ -25,13 +18,8 @@
   roles:
     - linux/wazuh
 
-- name: Installation des agent wazuh sur les windows
-  hosts: domaine1_windows, domaine2_windows
-  roles:
-    - windows/deployment_agent
 
-
-- name: Installation des agent wazuh sur les linux 
+- name: Installation wazuh sur les linux 
   hosts: domaine1_linux, domaine2_linux
   roles:
     - linux/deployment_agent
@@ -47,10 +35,6 @@
   roles:
     - ad/domaine1/fs-file-server
 
-- name: Configuration des serveurs sur le domaine2
-  hosts: domaine2_windows
-  roles:
-    - ad/domaine2/windows
 
 - name: Configuration du DC02
   hosts: dc02
@@ -62,3 +46,9 @@
   hosts: iis
   roles:
     - ad/domaine2/iis
+
+
+- name: Installation wazuh sur les windows
+  hosts: domaine1_windows, domaine2_windows
+  roles:
+    - windows/deployment_agent
