@@ -20,7 +20,7 @@ Vagrant.configure("2") do |config|
       vb.cpus = 3 # 2 processeurs
     end
 
-    dc02.vm.provision "shell", inline: 'Invoke-WebRequest -Uri "https://packages.wazuh.com/4.x/windows/wazuh-agent-4.8.0-1.msi" -OutFile "$env:TEMP\wazuh-agent.msi"'
+    dc02.vm.provision "shell", inline: 'Invoke-WebRequest -Uri "https://packages.wazuh.com/4.x/windows/wazuh-agent-4.10.1-1.msi" -OutFile "$env:TEMP\wazuh-agent.msi"'
 
 
   end
@@ -41,7 +41,7 @@ Vagrant.configure("2") do |config|
       vb.cpus = 3 # 2 processeurs
     end
 
-    iis.vm.provision "shell", inline: 'Invoke-WebRequest -Uri "https://packages.wazuh.com/4.x/windows/wazuh-agent-4.8.0-1.msi" -OutFile "$env:TEMP\wazuh-agent.msi"'
+    iis.vm.provision "shell", inline: 'Invoke-WebRequest -Uri "https://packages.wazuh.com/4.x/windows/wazuh-agent-4.10.1-1.msi" -OutFile "$env:TEMP\wazuh-agent.msi"'
   end
   
 end
