@@ -8,21 +8,11 @@
   roles:
     - ad/domaine2/windows
 
-- name: Configuration carte réseaux wazuh serveur
-  hosts: wazuh
-  roles:
-    - linux/network
 
 - name: Configuration wazuh serveur
   hosts: wazuh
   roles:
     - linux/wazuh
-
-
-- name: Installation wazuh sur les linux 
-  hosts: domaine1_linux, domaine2_linux
-  roles:
-    - linux/deployment_agent
 
 
 - name: Configureation du controller de domaine DC01
@@ -52,3 +42,8 @@
   hosts: domaine1_windows, domaine2_windows
   roles:
     - windows/deployment_agent
+
+- name: Installation wazuh sur les linux 
+  hosts: domaine1_linux, domaine2_linux
+  roles:
+    - linux/deployment_agent
