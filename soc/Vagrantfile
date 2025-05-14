@@ -16,6 +16,7 @@ Vagrant.configure("2") do |config|
         address 192.168.1.2
         netmask 255.255.255.0
         gateway 192.168.1.1
+        dns-nameservers 8.8.8.8
       " | sudo tee /etc/network/interfaces
         sudo reboot
       SHELL
