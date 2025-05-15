@@ -61,11 +61,20 @@ Vagrant.configure("2") do |config|
       end
 
     debian.vm.provision "shell", inline: "wget https://packages.wazuh.com/4.x/apt/pool/main/w/wazuh-agent/wazuh-agent_4.10.1-1_amd64.deb -O /home/vagrant/wazuh-agent_4.10.1-1_amd64.deb"
+    debian.vm.provision "file", source: "Install-DVWA.sh", destination: "/home/vagrant/Install-DVWA.sh"
 
-    debian.vm.provision "shell", inline: <<-SHELL
+    debian.vm.provision "shell",name:"installation_apache" , inline: <<-SHELL
       echo "vagrant"|sudo -S apt update -y 
       sudo apt install apache2 -y 
       sudo systemctl enable apache2.service
+    SHELL
+    
+    debian.vm.provision "shell",name:"installation_dvwa", inline: <<-SHELL
+      sudo chmod +x Install-DVWA.sh
+      sudo ./Install-DVWA.sh
+    SHELL
+
+    debian.vm.provision "shell",name:"configuration_carte_reseaux", inline: <<-SHELL
       echo "
       source /etc/network/interfaces.d/*
       auto eth1
@@ -77,5 +86,8 @@ Vagrant.configure("2") do |config|
       " | sudo tee /etc/network/interfaces
         sudo reboot
     SHELL
+
+
+
   end
 end
