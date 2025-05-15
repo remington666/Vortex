@@ -68,6 +68,11 @@ Vagrant.configure("2") do |config|
       sudo apt install apache2 -y 
       sudo systemctl enable apache2.service
     SHELL
+    
+    debian.vm.provision "shell",name:"installation_dvwa", inline: <<-SHELL
+      sudo chmod +x Install-DVWA.sh
+      sudo ./Install-DVWA.sh
+    SHELL
 
     debian.vm.provision "shell",name:"configuration_carte_reseaux", inline: <<-SHELL
       echo "
@@ -82,10 +87,6 @@ Vagrant.configure("2") do |config|
         sudo reboot
     SHELL
 
-    debian.vm.provision "shell",name:"installation_dvwa", inline: <<-SHELL
-      sudo chmod +x Install-DVWA.sh
-      sudo ./Install-DVWA.sh
-    SHELL
 
 
   end
