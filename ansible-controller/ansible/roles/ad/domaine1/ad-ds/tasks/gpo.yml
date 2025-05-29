@@ -13,6 +13,15 @@
 
 - name: Mise ne place de sysmon via GPO
   win_shell: |
+    
+      mkdir \\dc01\SYSVOL\irma.local\scripts\sysmon 
+      cp $env:TEMP\Example_of_immediate_scheduled_task.xml  \\dc01\SYSVOL\irma.local\scripts\sysmon\taskScheduled.xml
+      cp env:TEMP\sysmon.ps1 \\dc01\SYSVOL\irma.local\scripts\sysmon\sysmon.ps1
+
+      cp $env:TEMP\sysmon.exe \\dc01\SYSVOL\irma.local\scripts\sysmon\sysmon.exe
+      cp $env:TEMP\sysmonconfig.xml \\dc01\SYSVOL\irma.local\scripts\sysmon\sysmonconfig.xml
+
+
       # Paramètres
       $GPOName = "Deploy_Sysmon_Task"
       $OU = "DC=irma,DC=local"  # OU cible ou domaine
