@@ -53,3 +53,9 @@
   hosts: domaine1_linux, domaine2_linux
   roles:
     - linux/deployment_agent
+    - linux/conf_agent_wazuh
+
+- name: Configuration du fichier de conf de l'agent wazuh sur windows
+  hosts: domaine1_windows
+  roles:
+    - windows/conf_agent_wazuh

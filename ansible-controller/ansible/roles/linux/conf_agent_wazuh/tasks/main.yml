@@ -1,0 +1,2 @@
+- name: Configuration du fichier ossec.conf
+  import_tasks: localfile_of_logs.yml

@@ -1,0 +1,7 @@
+- name: Copier le script PowerShell
+  win_copy:
+    src: inserer_bloc.ps1
+    dest: C:\Temp\inserer_bloc.ps1
+
+- name: Exécuter le script PowerShell
+  win_shell: powershell.exe -ExecutionPolicy Bypass -File C:\Temp\inserer_bloc.ps1

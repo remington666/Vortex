@@ -9,3 +9,12 @@
 - name: get password admin
   ansible.builtin.shell: sudo tar -xvf wazuh-install-files.tar && cd wazuh-install-files/ && sudo cat wazuh-passwords.txt
   become: true
+
+
+- name: Télécharger et exécuter le script Wazuh-SOCFortress
+  ansible.builtin.shell: |
+    curl -so /tmp/wazuh_socfortress_rules.sh https://raw.githubusercontent.com/socfortress/Wazuh-Rules/main/wazuh_socfortress_rules.sh && \
+    bash /tmp/wazuh_socfortress_rules.sh
+  args:
+    executable: /bin/bash
+  become: true
