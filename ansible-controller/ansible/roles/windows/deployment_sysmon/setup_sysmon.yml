@@ -1,0 +1,5 @@
+- name: Exécuter le script PowerShell de déploiement GPO
+  win_shell: |
+    PowerShell -ExecutionPolicy Bypass -File $env:TEMP\\sysmon.ps1
+  become_user: 'Administrator'
+  become_method: runas

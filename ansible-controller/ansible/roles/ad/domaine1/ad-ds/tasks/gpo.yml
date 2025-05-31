@@ -7,24 +7,3 @@
     Set-GPRegistryValue -Name $GPOName -Key "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -ValueName "DisableCAD" -Type DWord -Value 1
     New-GPLink -Name $GPOName -Target "DC=irma,DC=local" -Enforced Yes 
     Set-GPPermission -Name $GPOName -TargetName 'GG_RH' -TargetType Group -PermissionLevel  GpoEditDeleteModifySecurity
-
-
-- name: Pépareation des fichiers pour sysmon
-  win_shell: |
-      New-Item -Path \\dc01\SYSVOL\irma.local\scripts\sysmon -ItemType Directory -Force
-      Copy-Item -Path  $env:TEMP\Example_of_immediate_scheduled_task.xml  -Destination  \\dc01\SYSVOL\irma.local\scripts\sysmon\taskScheduled.xml
-      Copy-Item -Path  $env:TEMP\sysmon.ps1  -Destination \\dc01\SYSVOL\irma.local\scripts\sysmon\sysmon.ps1
-
-      Copy-Item -Path  $env:TEMP\sysmon.exe  -Destination \\dc01\SYSVOL\irma.local\scripts\sysmon\sysmon.exe
-      Copy-Item -Path  $env:TEMP\sysmonconfig.xml  -Destination \\dc01\SYSVOL\irma.local\scripts\sysmon\sysmonconfig.xml
-
-- name: Copier le script PowerShell de déploiement GPO
-  win_copy:
-    src: deploy_sysmon.ps1
-    dest: C:\Windows\Temp\deploy_sysmon.ps1
-
-- name: Exécuter le script PowerShell de déploiement GPO
-  win_shell: |
-    PowerShell -ExecutionPolicy Bypass -File C:\Windows\Temp\deploy_sysmon.ps1
-  become_user: 'Administrator'
-  become_method: runas
