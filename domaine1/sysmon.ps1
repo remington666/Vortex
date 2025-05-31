@@ -1,5 +1,5 @@
-$SysmonShare = "\\dc01\SYSVOL\irma.local\scripts\sysmon\Sysmon.exe"
-$SysmonConfigShare = "\\dc01\SYSVOL\irma.local\scripts\sysmon\sysmonconfig.xml"
+$SysmonShare = "$env:TEMP\Sysmon.exe"
+$SysmonConfigShare = "$env:TEMP\sysmonconfig.xml"
 
 
 # Avant de poursuivre, on vérifie que le chemin vers l'exécutable est correct
