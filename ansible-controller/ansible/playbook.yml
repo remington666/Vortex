@@ -43,6 +43,12 @@
   roles:
     - windows/deployment_agent
 
+- name: Installation de auditd sur les linux
+  hosts: domaine1_linux
+  # become: true
+  roles:
+    - linux/auditd
+
 - name: Installation wazuh sur les linux 
   hosts: domaine1_linux, domaine2_linux
   roles:

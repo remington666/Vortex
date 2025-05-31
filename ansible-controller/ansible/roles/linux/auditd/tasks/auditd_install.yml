@@ -1,0 +1,39 @@
+- name: Installer auditd et audispd-plugins
+  apt:
+    name:
+      - auditd
+      - audispd-plugins
+    state: present
+    update_cache: yes
+
+- name: Activer le service auditd au démarrage
+  systemd:
+    name: auditd
+    enabled: yes
+
+- name: Démarrer le service auditd
+  systemd:
+    name: auditd
+    state: started
+
+- name: Ajouter les règles auditd pour Wazuh
+  blockinfile:
+    path: /etc/audit/rules.d/audit.rules
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - WAZUH"
+    block: |
+      -a exit,always -F arch=b64 -F euid=0 -S execve -k audit-wazuh-c
+      -a exit,always -F arch=b32 -F euid=0 -S execve -k audit-wazuh-c
+  become: true
+
+
+- name: Recharger les règles auditd
+  command: augenrules --load
+  become: true
+
+
+- name: Redémarrer auditd
+  systemd:
+    name: auditd
+    state: restarted
+  become: true
+
