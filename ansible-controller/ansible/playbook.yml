@@ -35,7 +35,7 @@
   roles:
     - ad/domaine2/iis
 
-- name: Installation wazuh sur les windows
+- name: Configuration des journaux d'evenements sur les windows
   hosts: domaine1_windows, domaine2_windows
   roles:
     - windows/configuration_channel_journal
@@ -53,7 +53,6 @@
 
 - name: Installation et configuration de suricata
   hosts: suricata
-  become: true
   roles:
     - linux/suricata
 

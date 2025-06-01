@@ -34,7 +34,3 @@
 - name: relancer suricata
   ansible.builtin.shell: sudo systemctl restart suricata
   become: true
-
-- name: relancer l'agent wazuh
-  ansible.builtin.shell: sudo systemctl restart wazuh-agent
-  become: true
