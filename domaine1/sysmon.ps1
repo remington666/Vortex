@@ -1,5 +1,5 @@
-$SysmonShare = "$env:TEMP\Sysmon.exe"
-$SysmonConfigShare = "$env:TEMP\sysmonconfig.xml"
+$SysmonShare = "C:\Users\vagrant\AppData\Local\Temp\Sysmon.exe"
+$SysmonConfigShare = "C:\Users\vagrant\AppData\Local\Temp\sysmonconfig.xml"
 
 
 # Avant de poursuivre, on vérifie que le chemin vers l'exécutable est correct
@@ -21,6 +21,7 @@ if(Test-Path -Path $SysmonShare -PathType Leaf)
     else
     {
        Write-Output "Sysmon64 va être installé sur cette machine"
-       & $SysmonShare -i -accepteula -c $SysmonConfigShare
+       & $SysmonShare -i $SysmonConfigShare  -accepteula 
+       & $SysmonShare -c $SysmonConfigShare
     }
 }
