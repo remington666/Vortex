@@ -25,9 +25,9 @@ Vagrant.configure("2") do |config|
     dc01.vm.provision "shell", inline: 'Invoke-WebRequest -Uri "https://packages.wazuh.com/4.x/windows/wazuh-agent-4.10.1-1.msi" -OutFile "C:\\Users\\vagrant\\AppData\\Local\\Temp\\wazuh-agent.msi"'
     dc01.vm.provision "shell", inline: 'Invoke-WebRequest -Uri "https://live.sysinternals.com/Sysmon64.exe" -OutFile "C:\\Users\\vagrant\\AppData\\Local\\Temp\\sysmon.exe" '
 
-    dc01.vm.provision "file", source: "sysmon.ps1", destination: "C:\\Users\\vagrant\\AppData\\Local\\Temp\\sysmon.ps1"
-    dc01.vm.provision "file", source: "sysmonconfig.xml", destination: "C:\\Users\\vagrant\\AppData\\Local\\Temp\\sysmonconfig.xml"
-    dc01.vm.provision "file", source: "Configure-Channel.ps1", destination: "C:\\Users\\vagrant\\AppData\\Local\\Temp\\Configure-Channel.ps1"
+    dc01.vm.provision "file", source: "../files/sysmon.ps1", destination: "C:\\Users\\vagrant\\AppData\\Local\\Temp\\sysmon.ps1"
+    dc01.vm.provision "file", source: "../files/sysmonconfig.xml", destination: "C:\\Users\\vagrant\\AppData\\Local\\Temp\\sysmonconfig.xml"
+    dc01.vm.provision "file", source: "../files/Configure-Channel.ps1", destination: "C:\\Users\\vagrant\\AppData\\Local\\Temp\\Configure-Channel.ps1"
 
   end
 
@@ -52,9 +52,9 @@ Vagrant.configure("2") do |config|
     file_srv.vm.provision "shell", inline: 'Invoke-WebRequest -Uri "https://packages.wazuh.com/4.x/windows/wazuh-agent-4.10.1-1.msi" -OutFile "C:\\Users\\vagrant\\AppData\\Local\\Temp\\wazuh-agent.msi"'
     file_srv.vm.provision "shell", inline: 'Invoke-WebRequest -Uri "https://live.sysinternals.com/Sysmon64.exe" -OutFile "C:\\Users\\vagrant\\AppData\\Local\\Temp\\sysmon.exe" '
     
-    file_srv.vm.provision "file", source: "sysmon.ps1", destination: "C:\\Users\\vagrant\\AppData\\Local\\Temp\\sysmon.ps1"
-    file_srv.vm.provision "file", source: "sysmonconfig.xml", destination: "C:\\Users\\vagrant\\AppData\\Local\\Temp\\sysmonconfig.xml"
-    file_srv.vm.provision "file", source: "Configure-Channel.ps1", destination: "C:\\Users\\vagrant\\AppData\\Local\\Temp\\Configure-Channel.ps1"
+    file_srv.vm.provision "file", source: "../files/sysmon.ps1", destination: "C:\\Users\\vagrant\\AppData\\Local\\Temp\\sysmon.ps1"
+    file_srv.vm.provision "file", source: "../files/sysmonconfig.xml", destination: "C:\\Users\\vagrant\\AppData\\Local\\Temp\\sysmonconfig.xml"
+    file_srv.vm.provision "file", source: "../files/Configure-Channel.ps1", destination: "C:\\Users\\vagrant\\AppData\\Local\\Temp\\Configure-Channel.ps1"
 
 
   end
