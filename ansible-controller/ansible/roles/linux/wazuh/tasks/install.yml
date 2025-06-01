@@ -14,7 +14,7 @@
 - name: Télécharger et exécuter le script Wazuh-SOCFortress
   ansible.builtin.shell: |
     curl -so /tmp/wazuh_socfortress_rules.sh https://raw.githubusercontent.com/socfortress/Wazuh-Rules/main/wazuh_socfortress_rules.sh && \
-    bash /tmp/wazuh_socfortress_rules.sh
+    bash /tmp/wazuh_socfortress_rules.sh -y
   args:
     executable: /bin/bash
   become: true
