@@ -1,9 +1,9 @@
 - name: ajout de dépot suricata
-  ansible.builtin.shell: sudo add-apt-repository ppa:oisf/suricata-stable
+  ansible.builtin.shell: sudo add-apt-repository ppa:oisf/suricata-stable -y
   become: true
 
 - name: update 
-  ansible.builtin.shell: sudo apt-get update
+  ansible.builtin.shell: sudo apt-get update -y
   become: true
 
 - name: installation de suricata
