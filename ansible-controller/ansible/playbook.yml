@@ -37,6 +37,11 @@
   roles:
     - ad/domaine2/iis
 
+- name: Installation wazuh sur les windows
+  hosts: domaine1_windows, domaine2_windows
+  roles:
+    - windows/configuration_channel_journal
+
 
 - name: Installation wazuh sur les windows
   hosts: domaine1_windows, domaine2_windows

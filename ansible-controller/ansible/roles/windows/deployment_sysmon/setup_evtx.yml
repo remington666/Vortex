@@ -1,5 +1,0 @@
-- name: Activation des journaux d'evenements nécaissaire
-  win_shell: |
-    PowerShell -ExecutionPolicy Bypass -File $env:TEMP\\Configure-Channel.ps1
-  become_user: 'Administrator'
-  become_method: runas
