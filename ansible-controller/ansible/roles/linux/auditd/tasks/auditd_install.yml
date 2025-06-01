@@ -5,16 +5,21 @@
       - audispd-plugins
     state: present
     update_cache: yes
+  become: true
+  
 
 - name: Activer le service auditd au démarrage
   systemd:
     name: auditd
     enabled: yes
+  become: true
+
 
 - name: Démarrer le service auditd
   systemd:
     name: auditd
     state: started
+  become: true
 
 - name: Ajouter les règles auditd pour Wazuh
   blockinfile:
@@ -36,4 +41,3 @@
     name: auditd
     state: restarted
   become: true
-
