@@ -8,17 +8,10 @@
   roles:
     - ad/domaine2/windows
 
-
 - name: Configuration wazuh serveur
   hosts: wazuh
   roles:
     - linux/wazuh
-
-- name: Installation et configuration de suricata
-  hosts: suricata
-  become: true
-  roles:
-    - linux/suricata
 
 - name: Configureation du controller de domaine DC01
   hosts: dc01
@@ -54,10 +47,15 @@
     - windows/deployment_agent
 
 - name: Installation de auditd sur les linux
-  hosts: domaine1_linux
-  # become: true
+  hosts: domaine1_linux, domaine2_linux
   roles:
     - linux/auditd
+
+- name: Installation et configuration de suricata
+  hosts: suricata
+  become: true
+  roles:
+    - linux/suricata
 
 - name: Installation et configuration des agent wazuh sur les linux 
   hosts: domaine1_linux, domaine2_linux
@@ -66,6 +64,6 @@
     - linux/conf_agent_wazuh
 
 - name: Configuration du fichier de conf de l'agent wazuh sur windows
-  hosts: domaine1_windows
+  hosts: domaine1_windows, domaine2_windows
   roles:
     - windows/conf_agent_wazuh
