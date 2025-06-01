@@ -6,6 +6,10 @@
         <location>/var/log/audit/audit.log</location>
         <log_format>audit</log_format>
       </localfile>
+      <localfile>
+        <log_format>json</log_format>
+        <location>/var/log/suricata/eve.json</location>
+      </localfile>
     insertafter: '</client_buffer>'
     marker: ""
-  become: true
+  become: true 

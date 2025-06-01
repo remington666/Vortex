@@ -1,0 +1,40 @@
+- name: ajout de dépot suricata
+  ansible.builtin.shell: sudo add-apt-repository ppa:oisf/suricata-stable
+  become: true
+
+- name: update 
+  ansible.builtin.shell: sudo apt-get update
+  become: true
+
+- name: installation de suricata
+  ansible.builtin.shell: sudo apt-get install suricata -y
+  become: true
+
+
+- name: téléchargement et installation des rulesset ( Emerging Threats Suricata ruleset)
+  ansible.builtin.shell: |
+    cd /tmp/ && curl -LO https://rules.emergingthreats.net/open/suricata-6.0.8/emerging.rules.tar.gz
+    sudo tar -xvzf emerging.rules.tar.gz && sudo mkdir /etc/suricata/rules && sudo mv rules/*.rules /etc/suricata/rules/
+    sudo chmod 640 /etc/suricata/rules/*.rules
+  args:
+    executable: /bin/bash
+  become: true
+
+
+- name: Copier le fichier suricata.yml 
+  copy:
+    src: suricata.yml         # Fichier sur la machine Ansible (control node)
+    dest: /etc/suricata/suricata.yaml      # Fichier sur la machine distante
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+
+
+- name: relancer suricata
+  ansible.builtin.shell: sudo systemctl restart suricata
+  become: true
+
+- name: relancer l'agent wazuh
+  ansible.builtin.shell: sudo systemctl restart wazuh-agent
+  become: true

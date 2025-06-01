@@ -1,0 +1,31 @@
+Vagrant.configure("2") do |config|
+
+  config.vm.define "suricata" do|suricata|
+    suricata.vm.box = "generic/ubuntu2204"
+    suricata.vm.hostname = "suricata"
+    suricata.vm.network "private_network", ip: "10.10.1.5", virtualbox__intnet: "vboxnet1"
+
+    suricata.vm.provider "virtualbox" do |vb|
+      vb.name = "suricata"
+      vb.memory = 2048 # 2 Go de RAM
+      vb.cpus = 1 # 2 processeurs
+      end
+
+    suricata.vm.provision "shell", inline: "wget https://packages.wazuh.com/4.x/apt/pool/main/w/wazuh-agent/wazuh-agent_4.10.1-1_amd64.deb -O /home/vagrant/wazuh-agent_4.10.1-1_amd64.deb"
+#    suricata.vm.provision "file", source: "Install-DVWA.sh", destination: "/home/vagrant/Install-DVWA.sh"
+
+    suricata.vm.provision "shell",name:"configuration_carte_reseaux", inline: <<-SHELL
+      echo "
+      source /etc/network/interfaces.d/*
+      auto eth1
+      iface eth1 inet static
+        address 10.10.1.5
+        netmask 255.255.255.0
+        gateway 10.10.1.1
+        dns-nameservers 8.8.8.8
+      " | sudo tee /etc/network/interfaces
+        sudo reboot
+    SHELL
+
+  end
+end

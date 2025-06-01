@@ -14,6 +14,11 @@
   roles:
     - linux/wazuh
 
+- name: Installation et configuration de suricata
+  hosts: suricata
+  become: true
+  roles:
+    - linux/suricata
 
 - name: Configureation du controller de domaine DC01
   hosts: dc01
@@ -49,7 +54,7 @@
   roles:
     - linux/auditd
 
-- name: Installation wazuh sur les linux 
+- name: Installation et configuration des agent wazuh sur les linux 
   hosts: domaine1_linux, domaine2_linux
   roles:
     - linux/deployment_agent
