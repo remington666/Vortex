@@ -20,7 +20,12 @@ Vagrant.configure("2") do |config|
       vb.cpus = 3 # 2 processeurs
     end
 
-    dc02.vm.provision "shell", inline: 'Invoke-WebRequest -Uri "https://packages.wazuh.com/4.x/windows/wazuh-agent-4.10.1-1.msi" -OutFile "$env:TEMP\wazuh-agent.msi"'
+    dc02.vm.provision "shell", inline: 'Invoke-WebRequest -Uri "https://packages.wazuh.com/4.x/windows/wazuh-agent-4.10.1-1.msi" -OutFile "C:\\Users\\vagrant\\AppData\\Local\\Temp\\wazuh-agent.msi"'
+    dc02.vm.provision "shell", inline: 'Invoke-WebRequest -Uri "https://live.sysinternals.com/Sysmon64.exe" -OutFile "C:\\Users\\vagrant\\AppData\\Local\\Temp\\sysmon.exe" '
+
+    dc02.provision "file", source: "sysmon.ps1", destination: "C:\\Users\\vagrant\\AppData\\Local\\Temp\\sysmon.ps1"
+    dc02.provision "file", source: "sysmonconfig.xml", destination: "C:\\Users\\vagrant\\AppData\\Local\\Temp\\sysmonconfig.xml"
+    dc02.provision "file", source: "Configure-Channel.ps1", destination: "C:\\Users\\vagrant\\AppData\\Local\\Temp\\Configure-Channel.ps1"
 
 
   end
@@ -42,6 +47,13 @@ Vagrant.configure("2") do |config|
     end
 
     iis.vm.provision "shell", inline: 'Invoke-WebRequest -Uri "https://packages.wazuh.com/4.x/windows/wazuh-agent-4.10.1-1.msi" -OutFile "$env:TEMP\wazuh-agent.msi"'
+    iis.vm.provision "shell", inline: 'Invoke-WebRequest -Uri "https://live.sysinternals.com/Sysmon64.exe" -OutFile "C:\\Users\\vagrant\\AppData\\Local\\Temp\\sysmon.exe" '
+    
+    iss.provision "file", source: "sysmon.ps1", destination: "C:\\Users\\vagrant\\AppData\\Local\\Temp\\sysmon.ps1"
+    iss.provision "file", source: "sysmonconfig.xml", destination: "C:\\Users\\vagrant\\AppData\\Local\\Temp\\sysmonconfig.xml"
+    iis.provision "file", source: "Configure-Channel.ps1", destination: "C:\\Users\\vagrant\\AppData\\Local\\Temp\\Configure-Channel.ps1"
+    
+    
   end
   
 end

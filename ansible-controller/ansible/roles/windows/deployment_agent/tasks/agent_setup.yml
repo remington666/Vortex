@@ -1,6 +1,6 @@
 - name: Configuration de l'agent wazuh
   ansible.windows.win_shell: |
-    Start-Process msiexec.exe -ArgumentList "/i `"$env:TEMP\wazuh-agent.msi`" /q WAZUH_MANAGER=192.168.1.2 WAZUH_AGENT_GROUP=default WAZUH_AGENT_NAME=$env:COMPUTERNAME " -Wait
+    Start-Process msiexec.exe -ArgumentList "/i `"C:\Users\vagrant\AppData\Local\Temp\wazuh-agent.msi`" /q WAZUH_MANAGER=192.168.1.2 WAZUH_AGENT_GROUP=default WAZUH_AGENT_NAME=$env:COMPUTERNAME " -Wait
   
 - name: Démarrer le service Wazuh
   ansible.windows.win_shell: NET START Wazuh

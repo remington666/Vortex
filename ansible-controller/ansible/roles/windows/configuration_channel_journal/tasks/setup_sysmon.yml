@@ -1,0 +1,6 @@
+- name: Exécuter le script PowerShell pour le deploiement de sysmon
+  win_shell: |
+    PowerShell -ExecutionPolicy Bypass -File C:\Users\vagrant\AppData\Local\Temp\sysmon.ps1
+  become_user: 'Administrator'
+  become_method: runas
+  become: yes
