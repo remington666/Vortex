@@ -18,3 +18,29 @@
   args:
     executable: /bin/bash
   become: true
+
+- name: Ajouter un bloc après une ligne spécifique pour configuration de récéption des logs du pfsense via syslog
+  ansible.builtin.blockinfile:
+    path: /var/ossec/etc/ossec.conf
+    block: |
+      <remote>
+        <connection>syslog</connection>
+        <port>514</port>
+        <protocol>udp</protocol>
+        <allowed-ips>192.168.1.1</allowed-ips>
+        <local_ip>192.168.1.2</local_ip>
+      </remote>
+      <remote>
+        <connection>syslog</connection>
+        <port>514</port>
+        <protocol>tcp</protocol>
+        <allowed-ips>192.168.1.1</allowed-ips>
+        <local_ip>192.168.1.2</local_ip>
+      </remote>
+    insertafter: '</remote>'
+    marker: ""
+  become: true 
+
+- name: reboot du service wazuh
+  ansible.builtin.shell: sudo systemctl restart wazuh-manager
+  become: true
