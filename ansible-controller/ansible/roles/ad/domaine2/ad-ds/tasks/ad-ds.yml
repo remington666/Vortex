@@ -4,10 +4,6 @@
     include_management_tools: yes
     state: present
 
-- name: Modification du mot de passe Administrateur
-  win_shell: 'net user Administrator Azertyuiop68.'
-  become_user: 'Administrator'
-  become_method: runas
 
 - name: Création du domaine enfant
   win_shell: |
