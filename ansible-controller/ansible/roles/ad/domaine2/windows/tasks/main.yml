@@ -1,2 +1,0 @@
-- name: Configuration du role AD-DS
-  import_tasks: config_dc.yml
