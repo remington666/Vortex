@@ -1,7 +1,12 @@
-- name: Configuration des globales
+- name: Configuration des interface réseaux windows
   hosts: domaine1_windows, domaine2_windows
   roles:
     - windows/network
+
+- name: Configuration des globales
+  hosts: domaine1_windows, domaine2_windows
+  roles:
+    - windows/global
 
 - name: Configuration des serveurs sur le domaine2
   hosts: domaine2_windows
