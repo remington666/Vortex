@@ -1,5 +1,2 @@
-- name: Configuration des journaux evtx
-  import_tasks: setup_evtx.yml 
-
 - name: Configuration de sysmon
   import_tasks: setup_sysmon.yml 

@@ -45,6 +45,15 @@
   roles:
     - windows/configuration_channel_journal
 
+- name: Configuration des journaux d'evenements sur les windows 2016
+  hosts: domaine2_windows
+  roles:
+    - windows/configuration_channel_journal_2016
+
+- name: Configuration des journaux d'evenements sur les windows 2022
+  hosts: domaine1_windows
+  roles:
+    - windows/configuration_channel_journal_2022
 
 - name: Installation wazuh sur les windows
   hosts: domaine1_windows, domaine2_windows

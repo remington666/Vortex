@@ -1,0 +1,2 @@
+- name: Configuration des journaux evtx pour W2016
+  import_tasks: setup_evtx.yml
