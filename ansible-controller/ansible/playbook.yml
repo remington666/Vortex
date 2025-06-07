@@ -8,10 +8,6 @@
   roles:
     - windows/global
 
-- name: Configuration des serveurs sur le domaine2
-  hosts: domaine2_windows
-  roles:
-    - ad/domaine2/windows
 
 - name: Configuration wazuh serveur
   hosts: wazuh
