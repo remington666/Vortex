@@ -3,13 +3,13 @@
   become_user: 'Administrator'
   become_method: runas
 
-  - name: Configuration du DNS
+- name: Configuration du DNS
   ansible.windows.win_dns_client: 
-    adapter_names: "Ethernet 2"
-    dns_servers: 
-      - 10.10.1.2
-      - 10.10.2.2
-      - 8.8.8.8
+  adapter_names: "Ethernet 2"
+  dns_servers: 
+    - 10.10.1.2
+    - 10.10.2.2
+    - 8.8.8.8
 
 
 - name: Add a network static route katrina 
