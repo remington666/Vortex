@@ -71,15 +71,6 @@ Designed for:
 
 ## Current Lab Topology
 
-Role	Technology
-🟣 Purple Backbone	Ansible Controller (Debian), orchestrates all provisioning
-⚙️ Domain 1	Windows Server 2022 – Domain Controller
-⚙️ Domain 2	Windows Server 2016 – Domain Controller
-🔐 Firewall	pfSense
-🧾 Asset Management	GLPI – Automatically deployed
-🔴 Red Team	Kali Linux
-🔵 Blue Team	Wazuh SIEM (Debian), Suricata (Ubuntu)
-
 The lab currently includes:
 
 | Role            | Technology                          |
