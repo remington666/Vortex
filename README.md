@@ -15,9 +15,9 @@
 <!-- Title & Tagline -->
 <h3 align="center">🌀 Vortex</h3>
 <p align="center">
-    <em>Automated Red & Blue Team Cyber Range – Powered by Vagrant & Ansible.</em>
+    <em>Automated Purple Team Cyber Lab – Built with Vagrant & Ansible.</em>
     <br>
-    Modular, realistic, and fully scriptable infrastructure for offensive & defensive cyber exercises.
+    Fully modular and scriptable infrastructure to simulate real-world attacks and defenses, reinforce enterprise resilience, and bridge the gap between Red & Blue Teams.
 </p>
 
 <!-- Links & Demo -->
@@ -51,16 +51,17 @@
 
 ## 📖 About
 
-**Vortex – Lab Purple Team** is a fully automated cyber range environment tailored for **Red Team**, **Blue Team**, and **Purple Team** scenarios.
+**Vortex – Purple Team Lab** is a work-in-progress cyber range environment focused on enhancing enterprise resilience through realistic Purple Team exercises.
 
-It’s designed for:
-- 🧠 Practicing advanced TTPs aligned with **MITRE ATT&CK**.
-- 🔄 Automating deployments via **Vagrant + Ansible**.
-- 🧩 Modular topologies for **SOC / AD / Threat Emulation**.
-- 📈 Lab-based exercises for detection engineering, post-exploitation, GPO abuse, lateral movement, log collection & threat hunting.
+Built with Vagrant and Ansible, it enables automated deployment of virtual infrastructures to simulate advanced attack and defense scenarios.
 
-> You can use it for **training**, **research**, **demoing tools**, or **developing detections**.
+Designed for:
 
+- Practicing MITRE ATT&CK TTPs in a structured lab.
+- Building modular topologies with Domain Controllers, SOC tools, firewalls, and attacker machines.
+- Testing post-exploitation, log collection, detection engineering, and threat hunting workflows.
+
+> ⚠️ This project is developed during personal time, outside of any professional context. It is actively evolving and may be subject to changes.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/remington666/Vortex/main/docs/github/graphical_resources/Screenshot-Vortex_Demo.png" alt="Vortex Demo Screenshot" width="auto" height="auto">
@@ -68,72 +69,181 @@ It’s designed for:
 
 ---
 
-## 🏗️ Architecture
+## Current Lab Topology
+
+Role	Technology
+🟣 Purple Backbone	Ansible Controller (Debian), orchestrates all provisioning
+⚙️ Domain 1	Windows Server 2022 – Domain Controller
+⚙️ Domain 2	Windows Server 2016 – Domain Controller
+🔐 Firewall	pfSense
+🧾 Asset Management	GLPI – Automatically deployed
+🔴 Red Team	Kali Linux
+🔵 Blue Team	Wazuh SIEM (Debian), Suricata (Ubuntu)
 
 The lab currently includes:
 
 | Role            | Technology                          |
 |-----------------|-------------------------------------|
-| 🔵 Blue Team     | Wazuh, Suricata, Sysmon, EventLogs |
-| 🔴 Red Team      | Kali, Covenant, C2 custom support   |
-| 🟣 Purple Infra  | Domain Controller, GPO, SMB shares |
-| ⚙️ SOC/Logging   | ELK, Filebeat, custom pipelines     |
-| 🧠 Scenarios     | MITRE TTPs, PowerShell, lolbins, etc. |
-| ☁️ Infra as Code | Vagrant + Ansible orchestration    |
+| 🟣 Purple Backbone  | Ansible Controller (Debian), orchestrates all provisioning |
+| ⚙️ Domain 1   | Windows Server 2022 – Domain Controller     |
+| ⚙️ Domain 2   | Windows Server 2016 – Domain Controller     |
+| 🔐 Firewall     | PfSense |
+| 🧾 Vulnerable target | GLPI (with RCE)    |
+| 🔴 Red Team     | Kali Linux |
+| 🔵 Blue Team     | Wazuh SIEM (Debian), Suricata (Ubuntu) |
 
-All systems are deployed as **isolated virtual machines** using VirtualBox.
+Each system is deployed as an independent VM using VirtualBox, with provisioning handled by the Ansible Controller.
+
+This setup allows users to simulate end-to-end Purple Team scenarios, from attack emulation to detection, logging, and analysis.
 
 <p align="right">(<a href="#top">🔼 Back to top</a>)</p>
 
 ## 🚀 Installation
 
-### Prerequisites
+### Prerequisites (tested on Debian 12)
 
-- Vagrant ≥ 2.2.19
-- VirtualBox ≥ 6.1
-- Ansible ≥ 2.10 (used within controller VM)
+To use Vortex, make sure your system is properly configured with the following tools and settings:
+
+- Base system setup
+```bash
+apt update && apt install -y \
+    curl wget git gpg \
+    build-essential gcc make perl \
+    linux-headers-$(uname -r)
+```
+
+- Install Vagrant
+```bash
+wget -O- https://apt.releases.hashicorp.com/gpg \
+  | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
+  | tee /etc/apt/sources.list.d/hashicorp.list
+
+apt update && apt install -y vagrant
+```
+
+- Install VirtualBox 7.1
+```bash
+wget https://download.virtualbox.org/virtualbox/7.1.6/virtualbox-7.1_7.1.6-167084~Debian~bookworm_amd64.deb
+dpkg -i virtualbox-7.1_7.1.6-167084~Debian~bookworm_amd64.deb || apt --fix-broken install -y
+```
+If you encounter kernel module issues:
+/sbin/vboxconfig
+
+- Install Ansible (Ubuntu PPA)
+```bash
+UBUNTU_CODENAME=jammy
+
+wget -O- "https://keyserver.ubuntu.com/pks/lookup?fingerprint=on&op=get&search=0x6125E2A8C77F2818FB7BD15B93C4A3FD7BB9C367" \
+  | gpg --dearmour -o /usr/share/keyrings/ansible-archive-keyring.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/ansible-archive-keyring.gpg] http://ppa.launchpad.net/ansible/ansible/ubuntu $UBUNTU_CODENAME main" \
+  | tee /etc/apt/sources.list.d/ansible.list
+
+apt update && apt install -y ansible
+```
+
+- Install required Vagrant plugins
+```bash
+vagrant plugin update
+vagrant plugin install winrm-elevated
+vagrant plugin install virtualbox
+```
+
+- Configure VirtualBox Networking
+Add trusted subnets:
+```bash
+echo "* 10.10.1.0/24 10.10.2.0/24 10.10.0.0/24 192.168.1.0/24 192.168.2.0/24" >> /etc/vbox/networks.conf
+```
+
+Create and configure host-only interfaces:
+```bash
+for i in {1..5}; do
+  VBoxManage hostonlyif create
+done
+
+VBoxManage hostonlyif ipconfig vboxnet1 --ip=10.10.1.254
+VBoxManage hostonlyif ipconfig vboxnet2 --ip=10.10.2.254
+VBoxManage hostonlyif ipconfig vboxnet3 --ip=10.10.0.254
+VBoxManage hostonlyif ipconfig vboxnet4 --ip=192.168.2.254
+VBoxManage hostonlyif ipconfig vboxnet5 --ip=192.168.1.254
+```
+
+> 🧪 Recommended environment: Debian 12 with the above configuration.
+> Ensure you have at least 32 GB of RAM and 256 GB of disk space available for smooth usage.
+
+---
 
 ### Steps
 
-1. **Git clone the repository**:
+1. **Git clone the repository**
 ```bash
-git clone https://github.com/remington666/Vortex.git && cd Vortex
+git clone https://github.com/remington666/Vortex.git
+cd Vortex
 ```
 
-2. **Bring up infrastructure**:
+2. **Launch the infrastructure** (manual method)
+Provision each module in order (except the Ansible Controller, which should be launched last):
 ```bash
-cd soc/
-vagrant up --provision
+cd domaine1 && vagrant up --provision && cd ..
+cd domaine2 && vagrant up --provision && cd ..
+cd firewall && vagrant up --provision && cd ..
+cd glpi-vagrant-ansible && vagrant up --provision && cd ..
+cd kali-vagrant-ansible && vagrant up --provision && cd ..
+cd soc && vagrant up --provision && cd ..
+cd suricata && vagrant up --provision && cd ..
+cd ansible-controller && vagrant up
 ```
 
-3. **Access Ansible controller**:
-
+Once everything is deployed, you can access the controller:
 ```bash
-cd ../ansible-controller
 vagrant ssh
 ```
 
-4. **Run playbooks inside**:
+📁 The Ansible configuration is automatically copied to /tmp on the controller VM.
 
+3. **Use the CLI helper** (recommended – alpha)
+You can also use the experimental CLI script vortex.sh to automate most actions:
 ```bash
-cd /vagrant
-ansible-playbook -i hosts.yml playbook.yml
+chmod +x vortex.sh
+./vortex.sh up           # Launch all modules except the controller
+./vortex.sh controller   # Launch the Ansible Controller only
+./vortex.sh destroy      # Destroy all modules except the controller
+./vortex.sh destroy-all  # Destroy everything
+./vortex.sh list         # Show all available modules
 ```
 
-5. **Docker integration**:
+> ⚠️ vortex.sh is in alpha. Contributions and feedback are welcome.
 
-For a Docker-based setup, refer to our Docker-specific guide: [Vortex Docker Setup](https://github.com/remington666/Vortex/blob/main/docker/README.md).
+> 💡 Notes
+> Each module is deployed as an isolated VirtualBox VM, using Vagrant.
+> The Ansible Controller is used to provision Windows servers, SOC components, and support post-deployment automation.
+> The project is developed entirely in personal time and is still under active development.
+
+--- 
+
+**Docker Integration** (coming soon)
+
+> We are actively working on a Docker-based version of Vortex to streamline deployment and portability.
 
 <p align="right">(<a href="#top">🔼 Back to top</a>)</p>
 
 ## 🎮 Usage
 
-Each role is modular, with:
+As mentioned in the installation section, you can use it in two ways:
 
-- 🔹 roles/windows/ (GPO, hardening, event forwarding)
-- 🔹 roles/redteam/ (implant staging, payloads, lateral moves)
-- 🔹 roles/soc/ (Wazuh, ELK, Suricata)
+- ✅ With the CLI script vortex.sh (recommended):
+    Automates all actions – provisioning, starting, destroying, listing.
 
+- 🛠️ Manually via vagrant up --provision in each folder (see Installation).
+
+After deployment, you can connect to the Ansible Controller:
+```bash
+cd ansible-controller
+vagrant ssh
+```
+    
 <p align="right">(<a href="#top">🔼 Back to top</a>)</p>
 
 ## 🔧 Troubleshooting
