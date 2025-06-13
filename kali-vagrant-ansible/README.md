@@ -35,8 +35,9 @@ Ensure the following are available on the host machine:
 ## ⚙️ Deployment
 
 Start the VM:
-vagrant up
-
+```
+vagrant up --provision
+```
 Automated Steps
 
     Ansible is automatically installed in the VM.
