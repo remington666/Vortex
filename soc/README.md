@@ -31,8 +31,9 @@ Make sure the following are installed on the host machine:
 ## ⚙️ Deployment
 
 Start the VM:
-vagrant up
-
+```
+vagrant up --provision
+```
 Automatic Provisioning Includes:
 
     Manual configuration of the network interface in:
@@ -55,12 +56,12 @@ It should be able to communicate with other VMs used for monitoring and security
 🛑 Cleanup
 
 To stop the VM:
-
+```
 vagrant halt
-
+```
 To remove the VM:
-
+```
 vagrant destroy
-
+```
 
 
