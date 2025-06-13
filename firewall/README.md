@@ -6,7 +6,7 @@ This project quickly deploys a pfSense virtual machine preconfigured for cyberse
 
 ## 📦 Start the Virtual Machine
 ```
-vagrant up
+vagrant up --provision
 ```
 🖧 Network Interfaces
 ```
