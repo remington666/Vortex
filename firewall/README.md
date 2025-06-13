@@ -20,7 +20,9 @@ vboxnet1	Domain 2: 10.10.2.1	Active Directory 2 Interface
 🔗 Access pfSense Interface
 
 Access the pfSense web interface from the host via:
+```
 📍 https://localhost:4343
+```
 ⚙️ Technical Details
 
   Vagrant box used: kennyl/pfsense version 2.4.0
