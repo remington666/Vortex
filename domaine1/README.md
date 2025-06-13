@@ -37,7 +37,7 @@ git clone <repository-url>
 cd <project-folder>
 
 Start the machines:
-vagrant up
+vagrant up --provision
 Wait until the agents, services and scripts are installed (this might take a few minutes)
 Access DVWA via your browser :
 http://10.10.1/
