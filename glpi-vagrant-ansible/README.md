@@ -30,7 +30,7 @@ This module automatically deploys a Debian VM with the GLPI IT asset management 
 Start the VM deployment:
 
 ```
-vagrant up
+vagrant up --provision
 ```
 Automated tasks:
 
