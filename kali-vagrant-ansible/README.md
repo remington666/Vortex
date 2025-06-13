@@ -71,9 +71,10 @@ It communicates with the gateway at:
 🛑 Cleanup
 
 To stop the VM:
-
+```
 vagrant halt
-
+```
 To destroy the VM:
-
+```
 vagrant destroy
+```
