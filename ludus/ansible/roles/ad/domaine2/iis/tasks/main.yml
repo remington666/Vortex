@@ -1,0 +1,5 @@
+- name: Configuration du role IIS (Web-Server)
+  import_tasks: iis.yml
+
+- name: Configuration domaine sur le serveur
+  import_tasks: ad-ds.yml

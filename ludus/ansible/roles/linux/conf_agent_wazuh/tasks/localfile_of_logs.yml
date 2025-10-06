@@ -1,0 +1,15 @@
+- name: Ajouter un bloc après une ligne spécifique
+  ansible.builtin.blockinfile:
+    path: /var/ossec/etc/ossec.conf
+    block: |
+      <localfile>
+        <location>/var/log/audit/audit.log</location>
+        <log_format>audit</log_format>
+      </localfile>
+      <localfile>
+        <log_format>json</log_format>
+        <location>/var/log/suricata/eve.json</location>
+      </localfile>
+    insertafter: '</client_buffer>'
+    marker: ""
+  become: true 

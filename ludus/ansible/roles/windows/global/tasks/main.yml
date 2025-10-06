@@ -1,0 +1,2 @@
+- name: Configuration de base pour les machines Windows
+  import_tasks: global.yml

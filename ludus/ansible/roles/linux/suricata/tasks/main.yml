@@ -1,0 +1,2 @@
+- name: Installation et Configuration de Suricata
+  import_tasks: install_suricata.yml

@@ -1,0 +1,17 @@
+- name: Installer le rôle Active Directory
+  win_feature:
+    name: AD-Domain-Services
+    include_management_tools: yes
+    state: present
+
+
+- name: Promouvoir en contrôleur de domaine
+  win_shell: |
+    Import-Module ADDSDeployment
+    $safeModeAdminstratorPassword = ConvertTo-SecureString 'SaFe68000.' -AsPlainText -Force
+    Install-ADDSforest  -CreateDNSDelegation:$false -DatabasePath "C:\Windows\NTDS" -DOmainMode "WinThreshold" -DOmainName "irma.local" -DOmainNetbiosName "IRMA" -ForestMode "WinThreshold" -InstallDns:$true -LogPath "C:\Windows\NTDS" -NoRebootOnCompletion:$false -SysvolPath "C:\Windows\SYSVOL" -SafeModeAdministratorPassword $safeModeAdminstratorPassword -Force:$true
+  become_user: 'Administrator'
+  become_method: runas
+
+- name: Redémarrer la machine après l’installation du rôle AD-DS
+  win_reboot:

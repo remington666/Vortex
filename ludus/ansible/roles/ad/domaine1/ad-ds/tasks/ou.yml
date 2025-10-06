@@ -1,0 +1,34 @@
+- name: "Créer l'Unité d'Organisation Groupes"
+  microsoft.ad.ou:
+    name: "Groupes"
+    path: DC=irma,DC=local
+    state: present
+ 
+- name: "Créer l'Unité d'Organisation groupes globaux"
+  microsoft.ad.ou:
+    name: "GG"
+    path: "OU=Groupes,DC=irma,DC=local"
+    state: present
+
+- name: "Créer l'Unité d'Organisation groupes du domaine locale"
+  microsoft.ad.ou:
+    name: "GDL"
+    path: "OU=Groupes,DC=irma,DC=local"
+    state: present
+
+- name: "Créer l'Unité d'Organisation utilisateur"
+  microsoft.ad.ou:
+    name: "Utilisateurs"
+    path: "DC=irma,DC=local"
+    state: present
+
+- name: Création d'une OU pour les utilisateurs
+  microsoft.ad.ou:
+    name: "GG_{{ item }}"
+    path: "OU=Utilisateurs,DC=irma,DC=local"
+    state: present
+  loop: 
+    - Direction
+    - RH
+    - IT
+    - Finance

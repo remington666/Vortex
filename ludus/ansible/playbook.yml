@@ -1,0 +1,69 @@
+- name: Configuration des interface réseaux windows
+  hosts: domaine1_windows, domaine2_windows
+  roles:
+    - windows/network
+
+- name: Configuration des globales
+  hosts: domaine1_windows, domaine2_windows
+  roles:
+    - windows/global
+
+
+- name: Configuration wazuh serveur
+  hosts: wazuh
+  roles:
+    - linux/wazuh
+
+- name: Configureation du controller de domaine DC01
+  hosts: dc01
+  roles:
+    - ad/domaine1/ad-ds
+
+- name: Configuration du serveur de fichier
+  hosts: file_srv
+  roles:
+    - ad/domaine1/fs-file-server
+
+
+- name: Configuration du DC02
+  hosts: dc02
+  roles:
+    - ad/domaine2/ad-ds
+
+
+- name: Confiuration de l'IIS
+  hosts: iis
+  roles:
+    - ad/domaine2/iis
+
+- name: Configuration des journaux d'evenements sur les windows
+  hosts: domaine1_windows, domaine2_windows
+  roles:
+    - windows/configuration_channel_journal
+
+
+- name: Installation wazuh sur les windows
+  hosts: domaine1_windows, domaine2_windows
+  roles:
+    - windows/deployment_agent
+
+- name: Installation de auditd sur les linux
+  hosts: domaine1_linux, domaine2_linux
+  roles:
+    - linux/auditd
+
+- name: Installation et configuration de suricata
+  hosts: suricata
+  roles:
+    - linux/suricata
+
+- name: Installation et configuration des agent wazuh sur les linux 
+  hosts: domaine1_linux, domaine2_linux
+  roles:
+    - linux/deployment_agent
+    - linux/conf_agent_wazuh
+
+- name: Configuration du fichier de conf de l'agent wazuh sur windows
+  hosts: domaine1_windows, domaine2_windows
+  roles:
+    - windows/conf_agent_wazuh
